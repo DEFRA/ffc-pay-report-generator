@@ -1,5 +1,4 @@
 const createMIReport = async () => {
-  
 }
 
 module.exports = {
