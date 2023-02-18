@@ -5,9 +5,6 @@ const createMIReport = async () => {
   const events = await getEvents()
   console.log(events)
 
-
-
-
   // return {
   //   id,
   //   frn: paymentData.frn,
