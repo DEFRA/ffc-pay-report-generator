@@ -1,8 +1,9 @@
 
 const { DefaultAzureCredential } = require('@azure/identity')
-const { TableClient } = require('@azure/data-tables')
+const { TableClient, odata } = require('@azure/data-tables')
 const { BlobServiceClient } = require('@azure/storage-blob')
 const { storageConfig } = require('./config')
+const { PAYMENT_EVENT, HOLD_EVENT, WARNING_EVENT, BATCH_EVENT } = require('./constants/event-types')
 
 let paymentClient
 let holdClient
@@ -40,6 +41,21 @@ const initialise = async () => {
   }
 }
 
+const getClient = (eventType) => {
+  switch (eventType) {
+    case PAYMENT_EVENT:
+      return paymentClient
+    case HOLD_EVENT:
+      return holdClient
+    case WARNING_EVENT:
+      return warningClient
+    case BATCH_EVENT:
+      return batchClient
+    default:
+      throw new Error(`Unknown event type: ${eventType}`)
+  }
+}
+
 const writeFile = async (filename, content) => {
   const blob = container.getBlockBlobClient(filename)
   await blob.upload(content, content.length)
@@ -47,5 +63,7 @@ const writeFile = async (filename, content) => {
 
 module.exports = {
   initialise,
-  writeFile
+  getClient,
+  writeFile,
+  odata
 }
