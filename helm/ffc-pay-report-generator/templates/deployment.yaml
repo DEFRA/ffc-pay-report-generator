@@ -1,0 +1,8 @@
+{{- include "ffc-helm-library.deployment" (list . "ffc-pay-report-generator.deployment") -}}
+{{- define "ffc-pay-report-generator.deployment" -}}
+spec:
+  template:
+    spec:
+      containers:
+      - {{ include "ffc-helm-library.container" (list . "ffc-pay-report-generator.container") }}
+{{- end -}}

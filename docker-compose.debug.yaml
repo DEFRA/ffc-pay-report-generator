@@ -1,3 +1,3 @@
 services:
-  ffc-template-node:
+  ffc-pay-report-generator:
     command: npm run start:debug
