@@ -7,7 +7,9 @@ const schema = Joi.object({
   paymentTable: Joi.string().default('payments'),
   holdTable: Joi.string().default('holds'),
   warningTable: Joi.string().default('warnings'),
-  batchTable: Joi.string().default('batches')
+  batchTable: Joi.string().default('batches'),
+  container: Joi.string().default('reports'),
+  createEntities: Joi.bool().default(false)
 })
 
 const config = {
@@ -17,7 +19,9 @@ const config = {
   paymentTable: process.env.AZURE_STORAGE_PAYMENT_REQUEST_TABLE,
   holdTable: process.env.AZURE_STORAGE_HOLD_TABLE,
   warningTable: process.env.AZURE_STORAGE_WARNING_TABLE,
-  batchTable: process.env.AZURE_STORAGE_BATCH_TABLE
+  batchTable: process.env.AZURE_STORAGE_BATCH_TABLE,
+  container: process.env.AZURE_STORAGE_CONTAINER,
+  createEntities: process.env.AZURE_STORAGE_CREATE_ENTITIES
 }
 
 const result = schema.validate(config, {
@@ -25,7 +29,7 @@ const result = schema.validate(config, {
 })
 
 if (result.error) {
-  throw new Error(`The message config is invalid. ${result.error.message}`)
+  throw new Error(`The storage config is invalid. ${result.error.message}`)
 }
 
 module.exports = result.value
