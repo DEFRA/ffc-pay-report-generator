@@ -4,7 +4,6 @@ const { getClient, odata } = require('../storage')
 const createMIReport = async () => {
   const events = await getEvents()
   console.log(events)
-
   // return {
   //   id,
   //   frn: paymentData.frn,
@@ -25,7 +24,7 @@ const createMIReport = async () => {
 
 const getEvents = async () => {
   const client = getClient(PAYMENT_EVENT)
-  const eventResults = client.listEntities({ queryOptions: { filter: odata`category eq correlationId` } })
+  const eventResults = client.listEntities({ queryOptions: { filter: odata`category eq 'correlationId'` } })
   const events = []
   for await (const event of eventResults) {
     events.push(event)
