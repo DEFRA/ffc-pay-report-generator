@@ -17,7 +17,9 @@
   "contributors": [],
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@hapi/hapi": "20.2.2",
+    "@azure/data-tables": "13.1.2",
+    "@azure/storage-blob": "12.10.0",
+    "log-timestamp": "0.3.0",
     "applicationinsights": "2.3.5"
   },
   "devDependencies": {

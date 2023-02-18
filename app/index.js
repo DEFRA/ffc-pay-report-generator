@@ -1,13 +1,17 @@
-const server = require('./server')
+const { queryEntitiesByTimestamp, writeFile, connect } = require('./storage')
+const buildReport = require('./mi-report')
+const { reportName } = require('./config')
 
-const init = async () => {
-  await server.start()
-  console.log('Server running on %s', server.info.uri)
+const main = async () => {
+  connect()
+  console.log('Sourcing report data')
+  const events = await queryEntitiesByTimestamp()
+  if (events.length) {
+    console.log('Report creation started')
+    const csvData = buildReport(events)
+    await writeFile(reportName, csvData)
+    console.log('Report created')
+  }
 }
 
-process.on('unhandledRejection', (err) => {
-  console.log(err)
-  process.exit(1)
-})
-
-init()
+main()
