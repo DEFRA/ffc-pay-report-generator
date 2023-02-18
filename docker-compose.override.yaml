@@ -8,8 +8,18 @@ services:
     image: ffc-pay-report-generator-development
     container_name: ffc-pay-report-generator-development
     ports:
-      - "3000:3000"
-      - "9229:9229"
+      - "9290:9229"
     volumes:
       - ./app:/home/node/app
       - ./package.json:/home/node/package.json
+
+  ffc-pay-event-store-azurite:
+    volumes:
+      - azurite_data:/data
+    ports:
+      - "10090:10000"
+      - "10091:10001"
+      - "10092:10002"
+
+volumes:
+  azurite_data:
