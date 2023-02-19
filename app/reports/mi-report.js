@@ -2,6 +2,7 @@ const { PAYMENT_EVENT } = require('../constants/event-types')
 const { convertToPence } = require('../currency-convert')
 const { getClient, odata, writeFile } = require('../storage')
 const { reportsConfig } = require('../config')
+const moment = require('moment')
 
 const createMIReport = async () => {
   const events = await getEvents()
@@ -65,7 +66,7 @@ const getReportLines = (events) => {
     batchCreatorId: event.events[0].data.sourceSystem,
     batchExportDate: getBatchExportDate(event.events),
     status: getStatus(event.events),
-    lastUpdated: event.events[event.events.length - 1].time
+    lastUpdated: moment(event.events[event.events.length - 1].time).format('DD/MM/YYYY')
   }))
 }
 
@@ -100,7 +101,7 @@ const getValue = (events) => {
 const getBatchExportDate = (events) => {
   const extractedEvent = events.find(event => event.type === 'uk.gov.defra.ffc.pay.payment.extracted')
   if (extractedEvent) {
-    return extractedEvent.time
+    return moment(extractedEvent.time).format('DD/MM/YYYY')
   }
   return ''
 }
