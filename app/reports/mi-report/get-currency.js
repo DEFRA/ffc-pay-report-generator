@@ -1,5 +1,7 @@
+const { PAYMENT_ENRICHED } = require('../../constants/events')
+
 const getCurrency = (events) => {
-  const enrichmentEvent = events.find(event => event.type === 'uk.gov.defra.ffc.pay.payment.enriched')
+  const enrichmentEvent = events.find(event => event.type === PAYMENT_ENRICHED)
   if (enrichmentEvent) {
     return enrichmentEvent.data.currency
   }

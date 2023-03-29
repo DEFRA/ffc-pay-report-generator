@@ -1,11 +1,12 @@
+const { PAYMENT_ENRICHED, PAYMENT_EXTRACTED } = require('../../constants/events')
 const { convertToPence } = require('../../currency-convert')
 
 const getValue = (events) => {
-  const enrichmentEvent = events.find(event => event.type === 'uk.gov.defra.ffc.pay.payment.enriched')
+  const enrichmentEvent = events.find(event => event.type === PAYMENT_ENRICHED)
   if (enrichmentEvent) {
     return enrichmentEvent.data.value
   }
-  const extractedEvent = events.find(event => event.type === 'uk.gov.defra.ffc.pay.payment.extracted')
+  const extractedEvent = events.find(event => event.type === PAYMENT_EXTRACTED)
   if (extractedEvent) {
     return convertToPence(extractedEvent.data.value)
   }
