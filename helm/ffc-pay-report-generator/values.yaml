@@ -18,8 +18,6 @@ containerSecret:
   name: ffc-pay-report-generator-container-secret
   type: Opaque
 
-deployment: {}
-
 container:
   requestMemory: 150Mi
   requestCpu: 120m
@@ -39,3 +37,4 @@ cronJob:
   schedule: "0 * * * *"
   concurrencyPolicy: Forbid
   restartPolicy: Never
+  successfulJobsHistoryLimit: 1
