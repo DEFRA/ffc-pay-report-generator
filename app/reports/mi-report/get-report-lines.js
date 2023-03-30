@@ -1,4 +1,6 @@
 const moment = require('moment')
+const { DATE_FORMAT } = require('../../constants/date-format')
+const { TRANSACTION } = require('../../constants/transaction')
 const { getBatchExportDate } = require('./get-batch-export-date')
 const { getCurrency } = require('./get-currency')
 const { getInvoiceNumber } = require('./get-invoice-number')
@@ -16,11 +18,11 @@ const getReportLines = (events) => {
     preferredPaymentCurrency: getCurrency(event.events),
     paymentInvoiceNumber: event.events[0].data.paymentRequestNumber,
     totalAmount: getValue(event.events),
-    batchId: event.events[0].data.batch ?? 'Transaction',
+    batchId: event.events[0].data.batch ?? TRANSACTION,
     batchCreatorId: event.events[0].data.sourceSystem,
     batchExportDate: getBatchExportDate(event.events),
     status: getStatus(event.events),
-    lastUpdated: moment(event.events[event.events.length - 1].time).format('DD/MM/YYYY')
+    lastUpdated: moment(event.events[event.events.length - 1].time).format(DATE_FORMAT)
   }))
 }
 
