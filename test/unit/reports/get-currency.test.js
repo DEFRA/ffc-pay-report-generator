@@ -1,3 +1,5 @@
+const { UNKNOWN } = require('../../../app/constants/unknown')
+
 const extractedEvent = require('../../mocks/events/extracted')
 const enrichedEvent = require('../../mocks/events/enriched')
 
@@ -13,11 +15,11 @@ describe('get currency', () => {
 
   test('should return unknown if no enriched event is found', () => {
     const currency = getCurrency([extractedEvent])
-    expect(currency).toEqual('Unknown')
+    expect(currency).toEqual(UNKNOWN)
   })
 
   test('should return unknown if no events', () => {
     const currency = getCurrency([])
-    expect(currency).toEqual('Unknown')
+    expect(currency).toEqual(UNKNOWN)
   })
 })

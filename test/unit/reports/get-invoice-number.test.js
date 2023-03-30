@@ -1,6 +1,8 @@
 const extractedEvent = require('../../mocks/events/extracted')
 const enrichedEvent = require('../../mocks/events/enriched')
 
+const { UNKNOWN } = require('../../../app/constants/unknown')
+
 const { getInvoiceNumber } = require('../../../app/reports/mi-report/get-invoice-number')
 
 const events = [extractedEvent, enrichedEvent]
@@ -18,6 +20,6 @@ describe('get invoice number', () => {
 
   test('should return unknown if no events', () => {
     const invoiceNumber = getInvoiceNumber([])
-    expect(invoiceNumber).toEqual('Unknown')
+    expect(invoiceNumber).toEqual(UNKNOWN)
   })
 })
