@@ -5,7 +5,7 @@ const getInvoiceNumber = (events) => {
   if (enrichmentEvent) {
     return enrichmentEvent.data.invoiceNumber
   }
-  return events[0].data.invoiceNumber ?? 'Unknown'
+  return events[0]?.data.invoiceNumber ?? 'Unknown'
 }
 
 module.exports = {

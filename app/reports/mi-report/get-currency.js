@@ -5,7 +5,7 @@ const getCurrency = (events) => {
   if (enrichmentEvent) {
     return enrichmentEvent.data.currency
   }
-  return events[0].data.currency ?? 'Unknown'
+  return events[0]?.data.currency ?? 'Unknown'
 }
 
 module.exports = {

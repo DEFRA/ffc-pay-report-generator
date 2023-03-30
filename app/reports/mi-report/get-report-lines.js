@@ -1,7 +1,7 @@
 const moment = require('moment')
 const { getBatchExportDate } = require('./get-batch-export-date')
 const { getCurrency } = require('./get-currency')
-const { getInvoiceNumber } = require('./get-invoice-line')
+const { getInvoiceNumber } = require('./get-invoice-number')
 const { getStatus } = require('./get-status')
 const { getValue } = require('./get-value')
 

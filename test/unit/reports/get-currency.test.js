@@ -15,4 +15,9 @@ describe('get currency', () => {
     const currency = getCurrency([extractedEvent])
     expect(currency).toEqual('Unknown')
   })
+
+  test('should return unknown if no events', () => {
+    const currency = getCurrency([])
+    expect(currency).toEqual('Unknown')
+  })
 })
