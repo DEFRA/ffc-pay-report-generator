@@ -1,3 +1,5 @@
+const { CORRELATION_ID } = require('../../mocks/values/correlation-id')
+
 jest.mock('../../../app/reports/mi-report/get-events')
 const { getEvents: mockGetEvents } = require('../../../app/reports/mi-report/get-events')
 jest.mock('../../../app/reports/mi-report/group-events-by-correlation-id')
@@ -23,8 +25,8 @@ describe('create mi report', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     mockGetEvents.mockResolvedValue([event])
-    mockGroupEventsByCorrelationId.mockReturnValue({ [event.data.correlationId]: [event] })
-    mockOrderGroupedEvents.mockReturnValue({ [event.data.correlationId]: [event] })
+    mockGroupEventsByCorrelationId.mockReturnValue([{ correlationId: CORRELATION_ID, events: [event] }])
+    mockOrderGroupedEvents.mockReturnValue([{ correlationId: CORRELATION_ID, events: [event] }])
     mockGetReportLines.mockReturnValue(reportLine)
     mockConvertToCSV.mockReturnValue(csv)
   })
@@ -46,7 +48,7 @@ describe('create mi report', () => {
 
   test('should order grouped events', async () => {
     await createMIReport()
-    expect(mockOrderGroupedEvents).toHaveBeenCalledWith({ [event.data.correlationId]: [event] })
+    expect(mockOrderGroupedEvents).toHaveBeenCalledWith([{ correlationId: CORRELATION_ID, events: [event] }])
   })
 
   test('should order grouped events once', async () => {
@@ -56,7 +58,7 @@ describe('create mi report', () => {
 
   test('should get report lines', async () => {
     await createMIReport()
-    expect(mockGetReportLines).toHaveBeenCalledWith({ [event.data.correlationId]: [event] })
+    expect(mockGetReportLines).toHaveBeenCalledWith([{ correlationId: CORRELATION_ID, events: [event] }])
   })
 
   test('should get report lines once', async () => {

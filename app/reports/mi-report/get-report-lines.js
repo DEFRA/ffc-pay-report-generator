@@ -3,6 +3,7 @@ const { DATE_FORMAT } = require('../../constants/date-format')
 const { TRANSACTION } = require('../../constants/transaction')
 const { getBatchExportDate } = require('./get-batch-export-date')
 const { getCurrency } = require('./get-currency')
+const { getFrn } = require('./get-frn')
 const { getInvoiceNumber } = require('./get-invoice-number')
 const { getStatus } = require('./get-status')
 const { getValue } = require('./get-value')
@@ -10,7 +11,7 @@ const { getValue } = require('./get-value')
 const getReportLines = (events) => {
   return events.map(event => ({
     id: event.correlationId,
-    frn: event.events[0].data.frn,
+    frn: getFrn(event.events),
     claimNumber: event.events[0].data.contractNumber,
     agreementNumber: event.events[0].data.agreementNumber,
     schemeYear: event.events[0].data.marketingYear,
