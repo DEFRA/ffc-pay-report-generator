@@ -9,7 +9,7 @@ const getReportLines = (events) => {
   return events.map(event => ({
     id: event.correlationId,
     frn: event.events[0].data.frn,
-    claimNumber: event.events[0].data.claimNumber,
+    claimNumber: event.events[0].data.contractNumber,
     agreementNumber: event.events[0].data.agreementNumber,
     schemeYear: event.events[0].data.marketingYear,
     invoiceNumber: getInvoiceNumber(event.events),
