@@ -15,7 +15,7 @@ const { reportsConfig } = require('../../../app/config')
 
 const { createMIReport } = require('../../../app/reports/mi-report/create')
 
-const event = require('../../mocks/event')
+const event = require('../../mocks/events/event')
 const reportLine = require('../../mocks/report-line')
 const csv = require('../../mocks/csv')
 
