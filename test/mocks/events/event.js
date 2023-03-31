@@ -10,6 +10,10 @@ const { INVOICE_NUMBER } = require('../values/invoice-number')
 const { SCHEME_ID } = require('../values/scheme-id')
 const { CONTRACT_NUMBER } = require('../values/contract-number')
 const { BATCH } = require('../values/batch')
+const { PAYMENT_REQUEST_NUMBER } = require('../values/payment-request-number')
+const { MARKETING_YEAR } = require('../values/marketing-year')
+const { SOURCE_SYSTEM } = require('../values/source-system')
+const { AGREEMENT_NUMBER } = require('../values/agreement-number')
 
 module.exports = {
   specversion: SPEC_VERSION,
@@ -24,6 +28,10 @@ module.exports = {
     schemeId: SCHEME_ID,
     invoiceNumber: INVOICE_NUMBER,
     contractNumber: CONTRACT_NUMBER,
-    batch: BATCH
+    batch: BATCH,
+    paymentRequestNumber: PAYMENT_REQUEST_NUMBER,
+    marketingYear: MARKETING_YEAR,
+    sourceSystem: SOURCE_SYSTEM,
+    agreementNumber: AGREEMENT_NUMBER
   }
 }

@@ -1,3 +1,4 @@
+const { TRANSACTION } = require('../../../app/constants/transaction')
 const { FRN } = require('../../mocks/values/frn')
 const { UNKNOWN } = require('../../../app/constants/unknown')
 const { INVOICE_NUMBER } = require('../../mocks/values/invoice-number')
@@ -25,10 +26,9 @@ const { getBatchExportDate: mockGetBatchExportDate } = require('../../../app/rep
 jest.mock('../../../app/reports/mi-report/get-status')
 const { getStatus: mockGetStatus } = require('../../../app/reports/mi-report/get-status')
 
-const enrichedEvent = require('../../mocks/events/enriched')
+let enrichedEvent
 
 const { getReportLines } = require('../../../app/reports/mi-report/get-report-lines')
-const {TRANSACTION} = require('../../../app/constants/transaction')
 
 let events
 
@@ -43,6 +43,7 @@ describe('get report lines', () => {
     mockGetBatchExportDate.mockReturnValue(DATE)
     mockGetStatus.mockReturnValue(PAYMENT_ENRICHED_STATUS)
 
+    enrichedEvent = JSON.parse(JSON.stringify(require('../../mocks/events/enriched')))
     events = [{ correlationId: CORRELATION_ID, events: [enrichedEvent] }]
   })
 
@@ -106,5 +107,25 @@ describe('get report lines', () => {
     enrichedEvent.data.batch = undefined
     const reportLines = getReportLines(events)
     expect(reportLines[0].batchId).toEqual(TRANSACTION)
+  })
+
+  test('should return source system as batch creator id', () => {
+    const reportLines = getReportLines(events)
+    expect(reportLines[0].batchCreatorId).toEqual(enrichedEvent.data.sourceSystem)
+  })
+
+  test('should return batch export date', () => {
+    const reportLines = getReportLines(events)
+    expect(reportLines[0].batchExportDate).toEqual(DATE)
+  })
+
+  test('should return status', () => {
+    const reportLines = getReportLines(events)
+    expect(reportLines[0].status).toEqual(PAYMENT_ENRICHED_STATUS)
+  })
+
+  test('should return last updated', () => {
+    const reportLines = getReportLines(events)
+    expect(reportLines[0].lastUpdated).toEqual(DATE)
   })
 })
