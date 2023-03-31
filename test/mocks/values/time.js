@@ -1,3 +1,3 @@
 module.exports = {
-  TIME: new Date().toISOString()
+  TIME: '2023-03-30T00:00:00.000Z'
 }
