@@ -35,4 +35,9 @@ describe('get report lines', () => {
     const reportLines = getReportLines(events)
     expect(reportLines).toHaveLength(events.length)
   })
+
+  test('should return correlation id as id', () => {
+    const reportLines = getReportLines(events)
+    expect(reportLines[0].id).toEqual(CORRELATION_ID)
+  })
 })
