@@ -8,6 +8,8 @@ const { CORRELATION_ID } = require('../values/correlation-id')
 const { FRN } = require('../values/frn')
 const { INVOICE_NUMBER } = require('../values/invoice-number')
 const { SCHEME_ID } = require('../values/scheme-id')
+const { CONTRACT_NUMBER } = require('../values/contract-number')
+const { BATCH } = require('../values/batch')
 
 module.exports = {
   specversion: SPEC_VERSION,
@@ -20,6 +22,8 @@ module.exports = {
     frn: FRN,
     correlationId: CORRELATION_ID,
     schemeId: SCHEME_ID,
-    invoiceNumber: INVOICE_NUMBER
+    invoiceNumber: INVOICE_NUMBER,
+    contractNumber: CONTRACT_NUMBER,
+    batch: BATCH
   }
 }
