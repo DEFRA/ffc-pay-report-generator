@@ -11,9 +11,11 @@ const createMIReport = async () => {
   const groupedEvents = groupEventsByCorrelationId(events)
   const orderedEvents = orderGroupedEvents(groupedEvents)
   const reportLines = getReportLines(orderedEvents)
-  const csv = convertToCSV(reportLines)
-  await writeFile(reportsConfig.miReportName, csv)
-  console.log(`MI report created: ${reportsConfig.miReportName}`)
+  if (reportLines.length) {
+    const csv = convertToCSV(reportLines)
+    await writeFile(reportsConfig.miReportName, csv)
+    console.log(`MI report created: ${reportsConfig.miReportName}`)
+  }
 }
 
 module.exports = {

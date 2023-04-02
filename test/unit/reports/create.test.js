@@ -26,7 +26,7 @@ describe('create mi report', () => {
     mockGetEvents.mockResolvedValue([event])
     mockGroupEventsByCorrelationId.mockReturnValue([groupedEvent])
     mockOrderGroupedEvents.mockReturnValue([groupedEvent])
-    mockGetReportLines.mockReturnValue(reportLine)
+    mockGetReportLines.mockReturnValue([reportLine])
     mockConvertToCSV.mockReturnValue(csv)
   })
 
@@ -65,23 +65,35 @@ describe('create mi report', () => {
     expect(mockGetReportLines).toHaveBeenCalledTimes(1)
   })
 
-  test('should convert report lines to csv', async () => {
+  test('should convert report lines to csv if report lines', async () => {
     await createMIReport()
-    expect(mockConvertToCSV).toHaveBeenCalledWith(reportLine)
+    expect(mockConvertToCSV).toHaveBeenCalledWith([reportLine])
   })
 
-  test('should convert report lines to csv once', async () => {
+  test('should convert report lines to csv once if report lines', async () => {
     await createMIReport()
     expect(mockConvertToCSV).toHaveBeenCalledTimes(1)
   })
 
-  test('should write csv to MI report file', async () => {
+  test('should not convert report lines to csv if no report lines', async () => {
+    mockGetReportLines.mockReturnValue([])
+    await createMIReport()
+    expect(mockConvertToCSV).not.toHaveBeenCalled()
+  })
+
+  test('should write csv to MI report file if report lines', async () => {
     await createMIReport()
     expect(mockWriteFile).toHaveBeenCalledWith(reportsConfig.miReportName, csv)
   })
 
-  test('should write csv to file once', async () => {
+  test('should write csv to file once if report lines', async () => {
     await createMIReport()
     expect(mockWriteFile).toHaveBeenCalledTimes(1)
+  })
+
+  test('should not write csv to MI report file if no report lines', async () => {
+    mockGetReportLines.mockReturnValue([])
+    await createMIReport()
+    expect(mockWriteFile).not.toHaveBeenCalled()
   })
 })
