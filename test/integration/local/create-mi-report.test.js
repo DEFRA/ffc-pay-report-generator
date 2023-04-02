@@ -1,6 +1,9 @@
 const { PAYMENT_EVENT } = require('../../../app/constants/event-types')
 const { createMIReport } = require('../../../app/reports/mi-report')
 const { initialise, getClient } = require('../../../app/storage')
+const { getBlob } = require('../../helpers/get-blob')
+const { reportsConfig } = require('../../../app/config')
+const { CORRELATION_ID } = require('../../mocks/values/correlation-id')
 
 let paymentClient
 let event
@@ -21,5 +24,7 @@ beforeEach(async () => {
 describe('process event message', () => {
   test('should create MI report', async () => {
     await createMIReport()
+    const blob = await getBlob(reportsConfig.miReportName)
+    expect(blob).toContain(CORRELATION_ID)
   })
 })
