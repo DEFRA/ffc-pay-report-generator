@@ -68,7 +68,7 @@ describe('get events', () => {
   test('should convert event data to json', async () => {
     const result = await getEvents()
     expect(result[0].data).toEqual(extractedEvent.data)
-    expect(result[1].data).toEqual(extractedEvent.data)
+    expect(result[1].data).toEqual(enrichedEvent.data)
   })
 
   test('should return an empty array if no events', async () => {

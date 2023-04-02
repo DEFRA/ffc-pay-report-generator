@@ -10,7 +10,7 @@ const getValue = (events) => {
   if (extractedEvent) {
     return convertToPence(extractedEvent.data.value)
   }
-  return convertToPence(events[0].data.value)
+  return events[0].data.value
 }
 
 module.exports = {
