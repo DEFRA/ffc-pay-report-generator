@@ -12,13 +12,13 @@ describe('get status', () => {
     events = []
   })
 
-  test('should extracted status if extracted last event', () => {
+  test('should return extracted status if extracted last event', () => {
     events = [extractedEvent]
     const status = getStatus(events)
     expect(status).toEqual(PAYMENT_EXTRACTED_STATUS)
   })
 
-  test('should enriched status if enriched last event', () => {
+  test('should return enriched status if enriched last event', () => {
     events = [extractedEvent, enrichedEvent]
     const status = getStatus(events)
     expect(status).toEqual(PAYMENT_ENRICHED_STATUS)
