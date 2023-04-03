@@ -1,6 +1,8 @@
 jest.mock('../../app/insights')
+
 jest.mock('../../app/reports')
 const { createMIReport: mockCreateMIReport } = require('../../app/reports')
+
 jest.mock('../../app/storage')
 const { initialise: mockInitialise } = require('../../app/storage')
 
