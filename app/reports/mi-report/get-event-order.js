@@ -15,7 +15,7 @@ const {
 } = require('../../constants/events')
 
 const getEventOrder = (event) => {
-  const events = [
+  const eventOrder = [
     PAYMENT_EXTRACTED,
     PAYMENT_ENRICHED,
     PAYMENT_PAUSED_DEBT,
@@ -30,7 +30,7 @@ const getEventOrder = (event) => {
     PAYMENT_ACKNOWLEDGED,
     PAYMENT_SETTLED
   ]
-  return events.indexOf(event) + 1
+  return eventOrder.indexOf(event) + 1
 }
 
 module.exports = {
