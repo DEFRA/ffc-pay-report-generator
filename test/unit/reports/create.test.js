@@ -27,6 +27,7 @@ const csv = require('../../mocks/csv')
 describe('create mi report', () => {
   beforeEach(() => {
     jest.clearAllMocks()
+
     mockGetEvents.mockResolvedValue([event])
     mockGroupEventsByCorrelationId.mockReturnValue([groupedEvent])
     mockOrderGroupedEvents.mockReturnValue([groupedEvent])
