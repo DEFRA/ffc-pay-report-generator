@@ -6,8 +6,8 @@ const {
   PAYMENT_PAUSED_LEDGER,
   PAYMENT_LEDGER_ASSIGNED,
   PAYMENT_PAUSED_QUALITY_CHECK,
-  PAYMENT_FAILED_QUALITY_CHECK,
-  PAYMENT_PASSED_QUALITY_CHECK,
+  PAYMENT_QUALITY_CHECK_FAILED,
+  PAYMENT_QUALITY_CHECK_PASSED,
   PAYMENT_PROCESSED,
   PAYMENT_SUBMITTED,
   PAYMENT_ACKNOWLEDGED,
@@ -53,12 +53,12 @@ describe('get event order', () => {
   })
 
   test('should return 8 for payment failed quality check event', () => {
-    const eventOrder = getEventOrder(PAYMENT_FAILED_QUALITY_CHECK)
+    const eventOrder = getEventOrder(PAYMENT_QUALITY_CHECK_FAILED)
     expect(eventOrder).toEqual(8)
   })
 
   test('should return 9 for payment passed quality check event', () => {
-    const eventOrder = getEventOrder(PAYMENT_PASSED_QUALITY_CHECK)
+    const eventOrder = getEventOrder(PAYMENT_QUALITY_CHECK_PASSED)
     expect(eventOrder).toEqual(9)
   })
 
