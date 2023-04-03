@@ -90,7 +90,7 @@ describe('create mi report', () => {
     expect(mockWriteFile).toHaveBeenCalledWith(reportsConfig.miReportName, csv)
   })
 
-  test('should write csv to file once if report lines', async () => {
+  test('should write csv to MI report file once if report lines', async () => {
     await createMIReport()
     expect(mockWriteFile).toHaveBeenCalledTimes(1)
   })
