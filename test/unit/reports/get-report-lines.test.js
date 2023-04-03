@@ -26,7 +26,6 @@ const { DATE } = require('../../mocks/values/date')
 const { PAYMENT_ENRICHED_STATUS } = require('../../../app/constants/statuses')
 const { CORRELATION_ID } = require('../../mocks/values/correlation-id')
 
-
 let enrichedEvent
 
 const { getReportLines } = require('../../../app/reports/mi-report/get-report-lines')
