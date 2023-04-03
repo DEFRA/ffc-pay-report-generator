@@ -61,6 +61,8 @@ The [execute](scripts/execute) script can be used to manually trigger the report
 ./scripts/execute
 ```
 
+When deployed to Kubernetes, a Cron Job will trigger report generation every hour.  This value can be configured through the Helm chart.
+
 ## How to stop the service
 
 The service can be stopped using the [stop](scripts/stop) script.
