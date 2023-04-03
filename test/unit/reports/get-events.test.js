@@ -1,6 +1,3 @@
-const { PAYMENT_EVENT } = require('../../../app/constants/event-types')
-const { stringifyEventData } = require('../../helpers/stringify-event-data')
-
 jest.mock('../../../app/storage')
 const { getClient: mockGetClient, odata: mockOdata } = require('../../../app/storage')
 
@@ -9,6 +6,9 @@ const mockListEntities = jest.fn()
 const mockTableClient = {
   listEntities: mockListEntities
 }
+
+const { PAYMENT_EVENT } = require('../../../app/constants/event-types')
+const { stringifyEventData } = require('../../helpers/stringify-event-data')
 
 let extractedEvent
 let enrichedEvent
