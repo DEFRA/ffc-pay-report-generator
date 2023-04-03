@@ -1,18 +1,22 @@
 jest.mock('../../../app/reports/mi-report/get-events')
 const { getEvents: mockGetEvents } = require('../../../app/reports/mi-report/get-events')
+
 jest.mock('../../../app/reports/mi-report/group-events-by-correlation-id')
 const { groupEventsByCorrelationId: mockGroupEventsByCorrelationId } = require('../../../app/reports/mi-report/group-events-by-correlation-id')
+
 jest.mock('../../../app/reports/mi-report/order-grouped-events')
 const { orderGroupedEvents: mockOrderGroupedEvents } = require('../../../app/reports/mi-report/order-grouped-events')
+
 jest.mock('../../../app/reports/mi-report/get-report-lines')
 const { getReportLines: mockGetReportLines } = require('../../../app/reports/mi-report/get-report-lines')
+
 jest.mock('../../../app/reports/mi-report/convert-to-csv')
 const { convertToCSV: mockConvertToCSV } = require('../../../app/reports/mi-report/convert-to-csv')
+
 jest.mock('../../../app/storage')
 const { writeFile: mockWriteFile } = require('../../../app/storage')
 
 const { reportsConfig } = require('../../../app/config')
-
 const { createMIReport } = require('../../../app/reports/mi-report/create')
 
 const event = require('../../mocks/events/event')

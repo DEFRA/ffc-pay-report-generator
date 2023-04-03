@@ -1,5 +1,6 @@
 describe('application insights', () => {
   const DEFAULT_ENV = process.env
+
   let applicationInsights
 
   beforeEach(() => {
