@@ -22,6 +22,7 @@ jest.mock('@azure/storage-blob', () => {
   }
 })
 jest.mock('@azure/identity')
+
 const config = require('../../app/config/storage')
 const { PAYMENT_EVENT, BATCH_EVENT, HOLD_EVENT, WARNING_EVENT } = require('../../app/constants/event-types')
 
