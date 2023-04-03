@@ -34,7 +34,7 @@ Docker Compose can be used to build the container image.
 docker-compose build
 ```
 
-The service will file watch application and test files so no need to rebuild the container unless a change to an npm package is made.
+The service will start with application and test code volume mappings so no need to rebuild the container unless a change to an npm package is made.
 
 ## How to start the service
 
