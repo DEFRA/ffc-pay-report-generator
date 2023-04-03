@@ -31,7 +31,7 @@ describe('convert currency', () => {
     expect(result).toEqual(10000)
   })
 
-  test('converts 100 to pence if string with zero decimal', () => {
+  test('converts 100 to pence if string with no decimals', () => {
     const result = convertToPence('100.00')
     expect(result).toEqual(10000)
   })
