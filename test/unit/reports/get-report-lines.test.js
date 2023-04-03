@@ -1,13 +1,3 @@
-const { TRANSACTION } = require('../../../app/constants/transaction')
-const { FRN } = require('../../mocks/values/frn')
-const { UNKNOWN } = require('../../../app/constants/unknown')
-const { INVOICE_NUMBER } = require('../../mocks/values/invoice-number')
-const { CURRENCY } = require('../../mocks/values/currency')
-const { VALUE } = require('../../mocks/values/value')
-const { DATE } = require('../../mocks/values/date')
-const { PAYMENT_ENRICHED_STATUS } = require('../../../app/constants/statuses')
-const { CORRELATION_ID } = require('../../mocks/values/correlation-id')
-
 jest.mock('../../../app/reports/mi-report/get-frn')
 const { getFrn: mockGetFrn } = require('../../../app/reports/mi-report/get-frn')
 
@@ -25,6 +15,17 @@ const { getBatchExportDate: mockGetBatchExportDate } = require('../../../app/rep
 
 jest.mock('../../../app/reports/mi-report/get-status')
 const { getStatus: mockGetStatus } = require('../../../app/reports/mi-report/get-status')
+
+const { TRANSACTION } = require('../../../app/constants/transaction')
+const { FRN } = require('../../mocks/values/frn')
+const { UNKNOWN } = require('../../../app/constants/unknown')
+const { INVOICE_NUMBER } = require('../../mocks/values/invoice-number')
+const { CURRENCY } = require('../../mocks/values/currency')
+const { VALUE } = require('../../mocks/values/value')
+const { DATE } = require('../../mocks/values/date')
+const { PAYMENT_ENRICHED_STATUS } = require('../../../app/constants/statuses')
+const { CORRELATION_ID } = require('../../mocks/values/correlation-id')
+
 
 let enrichedEvent
 
