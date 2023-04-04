@@ -1,0 +1,5 @@
+{{- if .Values.aadPodIdentity }}
+{{- include "ffc-helm-library.azure-identity" (list . "ffc-pay-report-generator.azure-identity") -}}
+{{- end }}
+{{- define "ffc-pay-report-generator.azure-identity" -}}
+{{- end -}}

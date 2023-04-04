@@ -9,7 +9,7 @@ labels:
   component: service
 
 appInsights:
-  key:
+  connectionString:
 
 containerConfigMap:
   name: ffc-pay-report-generator-config-map
@@ -18,27 +18,23 @@ containerSecret:
   name: ffc-pay-report-generator-container-secret
   type: Opaque
 
-deployment: {}
-
 container:
-  requestMemory: 100Mi
-  requestCpu: 100m
-  limitMemory: 100Mi
-  limitCpu: 100m
-  port: 3000
+  requestMemory: 150Mi
+  requestCpu: 120m
+  limitMemory: 150Mi
+  limitCpu: 120m
+  azureStorageConnectionString: dummy
+  azureStorageUseConnectionString: false
+  azureStorageAccountName: ffcpay
 
-livenessProbe:
-  path: /healthz
-  port: 3000
-  initialDelaySeconds: 20
-  periodSeconds: 10
-  failureThreshold: 3
-  timeoutSeconds: 5
+aadPodIdentity: true
 
-readinessProbe:
-  path: /healthy
-  port: 3000
-  initialDelaySeconds: 30
-  periodSeconds: 10
-  failureThreshold: 3
-  timeoutSeconds: 5
+azureIdentity:
+  clientID: not-a-real-clientID
+  resourceID: not-a-real-resourceID
+
+cronJob:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  restartPolicy: Never
+  successfulJobsHistoryLimit: 1
