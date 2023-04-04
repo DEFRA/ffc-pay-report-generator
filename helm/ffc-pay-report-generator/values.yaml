@@ -21,8 +21,8 @@ containerSecret:
 container:
   requestMemory: 150Mi
   requestCpu: 120m
-  limitMemory: 300Mi
-  limitCpu: 300m
+  limitMemory: 150Mi
+  limitCpu: 120m
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
   azureStorageAccountName: ffcpay
