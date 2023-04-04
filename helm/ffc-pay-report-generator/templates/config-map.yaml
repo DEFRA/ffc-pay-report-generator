@@ -5,5 +5,5 @@ data:
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
   AZURE_STORAGE_CONNECTION_STRING: {{ quote .Values.container.azureStorageConnectionString }}
   AZURE_STORAGE_USE_CONNECTION_STRING: {{ quote .Values.container.azureStorageUseConnectionString }}
-  AZURE_STORAGE_ACCOUNT_NAME: {{ quote .Values.container.azureStorageAccountName }}
+  AZURE_STORAGE_ACCOUNT: {{ quote .Values.container.azureStorageAccountName }}
 {{- end -}}
