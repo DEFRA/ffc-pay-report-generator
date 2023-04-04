@@ -1,6 +1,6 @@
 {
   "name": "ffc-pay-report-generator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generate MI report",
   "homepage": "https://github.com/DEFRA/ffc-pay-report-generator",
   "main": "app/index.js",
