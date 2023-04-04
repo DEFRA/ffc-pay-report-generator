@@ -26,7 +26,7 @@ const initialise = async () => {
     holdClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.holdTable, new DefaultAzureCredential())
     warningClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.warningTable, new DefaultAzureCredential())
     batchClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.batchTable, new DefaultAzureCredential())
-    blobServiceClient = new BlobServiceClient(`https://${storageConfig.storageAccount}.blob.core.windows.net`, new DefaultAzureCredential())
+    blobServiceClient = new BlobServiceClient(`https://${storageConfig.account}.blob.core.windows.net`, new DefaultAzureCredential())
   }
   container = blobServiceClient.getContainerClient(storageConfig.container)
   if (storageConfig.createEntities) {
