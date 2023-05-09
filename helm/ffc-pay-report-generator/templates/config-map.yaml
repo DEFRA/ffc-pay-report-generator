@@ -2,6 +2,7 @@
 {{- define "ffc-pay-report-generator.config-map" -}}
 data:
   NODE_ENV: {{ quote .Values.environment }}
+  NODE_OPTIONS: {{ quote .Values.container.nodeOptions }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
   AZURE_STORAGE_CONNECTIONSTRING: {{ quote .Values.container.azureStorageConnectionString }}
   AZURE_STORAGE_USE_CONNECTION_STRING: {{ quote .Values.container.azureStorageUseConnectionString }}
