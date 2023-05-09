@@ -19,6 +19,7 @@ containerSecret:
   type: Opaque
 
 container:
+  nodeOptions: --max-old-space-size=8192
   requestMemory: 150Mi
   requestCpu: 120m
   limitMemory: 500Mi
