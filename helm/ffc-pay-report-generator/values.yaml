@@ -21,7 +21,7 @@ containerSecret:
 container:
   requestMemory: 150Mi
   requestCpu: 120m
-  limitMemory: 150Mi
+  limitMemory: 250Mi
   limitCpu: 120m
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
