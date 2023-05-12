@@ -8,6 +8,7 @@ module.exports = {
   PAYMENT_PAUSED_QUALITY_CHECK_STATUS: 'Waiting for ledger assignment quality check',
   PAYMENT_QUALITY_CHECK_FAILED_STATUS: 'Ledger assignment quality check failed, waiting for correction',
   PAYMENT_QUALITY_CHECK_PASSED_STATUS: 'Ledger assignment quality check passed',
+  PAYMENT_RESET_STATUS: 'Reset to be recalculated',
   PAYMENT_PROCESSED_STATUS: 'Calculation of final state completed',
   PAYMENT_SUBMITTED_STATUS: 'Submitted to payment ledger',
   PAYMENT_ACKNOWLEDGED_STATUS: 'Acknowledged by payment ledger',

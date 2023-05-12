@@ -8,6 +8,7 @@ module.exports = {
   PAYMENT_PAUSED_QUALITY_CHECK: 'uk.gov.defra.ffc.pay.payment.ledger.quality-check.pending',
   PAYMENT_QUALITY_CHECK_FAILED: 'uk.gov.defra.ffc.pay.payment.ledger.quality-check.failed',
   PAYMENT_QUALITY_CHECK_PASSED: 'uk.gov.defra.ffc.pay.payment.ledger.quality-check.passed',
+  PAYMENT_RESET: 'uk.gov.defra.ffc.pay.payment.reset',
   PAYMENT_PROCESSED: 'uk.gov.defra.ffc.pay.payment.processed',
   PAYMENT_SUBMITTED: 'uk.gov.defra.ffc.pay.payment.submitted',
   PAYMENT_ACKNOWLEDGED: 'uk.gov.defra.ffc.pay.payment.acknowledged',
