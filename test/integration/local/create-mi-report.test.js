@@ -1,9 +1,11 @@
+const { CORRELATION_ID } = require('../../mocks/values/correlation-id')
+
 const { PAYMENT_EVENT } = require('../../../app/constants/event-types')
+
+const { reportsConfig } = require('../../../app/config')
+const { getBlob } = require('../../helpers/get-blob')
 const { createMIReport } = require('../../../app/reports/mi-report')
 const { initialise, getClient } = require('../../../app/storage')
-const { getBlob } = require('../../helpers/get-blob')
-const { reportsConfig } = require('../../../app/config')
-const { CORRELATION_ID } = require('../../mocks/values/correlation-id')
 
 let paymentClient
 let event
