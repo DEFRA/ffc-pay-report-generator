@@ -1,7 +1,5 @@
 const moment = require('moment')
 const { DATE_FORMAT } = require('../../constants/date-format')
-const { TRANSACTION } = require('../../constants/transaction')
-const { UNKNOWN } = require('../../constants/unknown')
 
 const getReportLines = (events) => {
   return events.map(event => ({

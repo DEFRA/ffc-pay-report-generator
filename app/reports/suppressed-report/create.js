@@ -1,7 +1,6 @@
 const { writeFile } = require('../../storage')
 const { reportsConfig } = require('../../config')
 const { getEvents } = require('../shared/get-events')
-const { groupEventsByCorrelationId } = require('../mi-report/group-events-by-correlation-id')
 const { getReportLines } = require('./get-report-lines')
 const { convertToCSV } = require('../shared/convert-to-csv')
 const { PAYMENT_SUPPRESSED } = require('../../constants/events')
