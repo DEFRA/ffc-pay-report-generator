@@ -1,10 +1,10 @@
 const { writeFile } = require('../../storage')
 const { reportsConfig } = require('../../config')
-const { getEvents } = require('./get-events')
+const { getEvents } = require('../shared/get-events')
 const { groupEventsByCorrelationId } = require('./group-events-by-correlation-id')
 const { orderGroupedEvents } = require('./order-grouped-events')
 const { getReportLines } = require('./get-report-lines')
-const { convertToCSV } = require('./convert-to-csv')
+const { convertToCSV } = require('../shared/convert-to-csv')
 
 const createMIReport = async () => {
   const events = await getEvents()

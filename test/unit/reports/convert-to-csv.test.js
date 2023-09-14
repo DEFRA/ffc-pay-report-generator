@@ -1,4 +1,4 @@
-const { convertToCSV } = require('../../../app/reports/mi-report/convert-to-csv')
+const { convertToCSV } = require('../../../app/reports/shared/convert-to-csv')
 
 const reportLine = require('../../mocks/report-line')
 const reportLines = [reportLine, reportLine]

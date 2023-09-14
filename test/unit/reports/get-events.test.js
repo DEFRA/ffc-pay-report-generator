@@ -11,7 +11,7 @@ const { PAYMENT_EVENT } = require('../../../app/constants/event-types')
 
 const { stringifyEventData } = require('../../helpers/stringify-event-data')
 
-const { getEvents } = require('../../../app/reports/mi-report/get-events')
+const { getEvents } = require('../../../app/reports/shared/get-events')
 
 let extractedEvent
 let enrichedEvent

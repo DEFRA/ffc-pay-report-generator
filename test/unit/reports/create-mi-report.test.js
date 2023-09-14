@@ -1,5 +1,5 @@
 jest.mock('../../../app/reports/mi-report/get-events')
-const { getEvents: mockGetEvents } = require('../../../app/reports/mi-report/get-events')
+const { getEvents: mockGetEvents } = require('../../../app/reports/shared/get-events')
 
 jest.mock('../../../app/reports/mi-report/group-events-by-correlation-id')
 const { groupEventsByCorrelationId: mockGroupEventsByCorrelationId } = require('../../../app/reports/mi-report/group-events-by-correlation-id')
@@ -11,7 +11,7 @@ jest.mock('../../../app/reports/mi-report/get-report-lines')
 const { getReportLines: mockGetReportLines } = require('../../../app/reports/mi-report/get-report-lines')
 
 jest.mock('../../../app/reports/mi-report/convert-to-csv')
-const { convertToCSV: mockConvertToCSV } = require('../../../app/reports/mi-report/convert-to-csv')
+const { convertToCSV: mockConvertToCSV } = require('../../../app/reports/shared/convert-to-csv')
 
 jest.mock('../../../app/storage')
 const { writeFile: mockWriteFile } = require('../../../app/storage')
