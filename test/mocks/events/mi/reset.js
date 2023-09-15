@@ -1,4 +1,4 @@
-const { PAYMENT_RESET } = require('../../../app/constants/events')
+const { PAYMENT_RESET } = require('../../../../app/constants/events')
 const event = require('./event')
 
 module.exports = {

@@ -1,5 +1,5 @@
-const { createMIReport } = require('./mi-report/create')
-const { createSuppressedReport } = require('./suppressed-report/create')
+const { createMIReport } = require('./create-mi-report')
+const { createSuppressedReport } = require('./create-suppressed-report')
 
 module.exports = {
   createMIReport,

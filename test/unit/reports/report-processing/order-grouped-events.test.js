@@ -1,7 +1,7 @@
-jest.mock('../../../app/reports/mi-report/get-event-order')
-const { getEventOrder } = require('../../../app/reports/mi-report/get-event-order')
+jest.mock('../../../../app/reports/report-processing/get-event-order')
+const { getEventOrder } = require('../../../../app/reports/report-processing/get-event-order')
 
-const { orderGroupedEvents } = require('../../../app/reports/mi-report/order-grouped-events')
+const { orderGroupedEvents } = require('../../../../app/reports/report-processing/order-grouped-events')
 
 let events
 

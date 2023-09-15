@@ -1,4 +1,4 @@
-const { PAYMENT_ENRICHED } = require('../../../app/constants/events')
+const { PAYMENT_ENRICHED } = require('../../../../app/constants/events')
 const event = require('./event')
 
 module.exports = {

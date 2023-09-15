@@ -1,7 +1,7 @@
-const extractedEvent = require('../../mocks/events/extracted')
-const enrichedEvent = require('../../mocks/events/enriched')
+const extractedEvent = require('../../../mocks/events/mi/extracted')
+const enrichedEvent = require('../../../mocks/events/mi/enriched')
 
-const { getBatchExportDate } = require('../../../app/reports/mi-report/get-batch-export-date')
+const { getBatchExportDate } = require('../../../../app/reports/report-processing/get-batch-export-date')
 
 const events = [extractedEvent, enrichedEvent]
 

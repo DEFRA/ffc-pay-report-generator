@@ -1,5 +1,5 @@
-const { PAYMENT_EXTRACTED } = require('../../../app/constants/events')
-const { VALUE } = require('../values/value')
+const { PAYMENT_EXTRACTED } = require('../../../../app/constants/events')
+const { VALUE } = require('../../values/value')
 
 const event = require('./event')
 

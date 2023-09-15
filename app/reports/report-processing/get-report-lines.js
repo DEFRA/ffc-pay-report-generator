@@ -8,8 +8,16 @@ const { getFrn } = require('./get-frn')
 const { getInvoiceNumber } = require('./get-invoice-number')
 const { getStatus } = require('./get-status')
 const { getValue } = require('./get-value')
+const { SUPPRESSED_REPORT } = require('../../constants/report-types')
 
-const getReportLines = (events) => {
+const getReportLines = (events, reportType) => {
+  if (reportType === SUPPRESSED_REPORT) {
+    return getSuppressedReportLines(events)
+  }
+  return getMIReportLines(events)
+}
+
+const getMIReportLines = (events) => {
   return events.map(event => ({
     id: event.correlationId,
     frn: getFrn(event.events),
@@ -23,6 +31,19 @@ const getReportLines = (events) => {
     batchId: event.events[0].data.batch ?? TRANSACTION,
     batchCreatorId: event.events[0].data.sourceSystem,
     batchExportDate: getBatchExportDate(event.events),
+    status: getStatus(event.events),
+    lastUpdated: moment(event.events[event.events.length - 1].time).format(DATE_FORMAT)
+  }))
+}
+
+const getSuppressedReportLines = (events) => {
+  return events.map(event => ({
+    id: event.correlationId,
+    frn: getFrn(event.events),
+    agreementNumber: event.events[0].data.agreementNumber,
+    deltaValue: event.events[0].data.deltaValue,
+    creditAP: event.events[0].data.creditAP,
+    suppressedAR: event.events[0].data.suppressedAR,
     status: getStatus(event.events),
     lastUpdated: moment(event.events[event.events.length - 1].time).format(DATE_FORMAT)
   }))

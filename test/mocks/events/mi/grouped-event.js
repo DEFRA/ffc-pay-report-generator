@@ -1,4 +1,4 @@
-const { CORRELATION_ID } = require('../values/correlation-id')
+const { CORRELATION_ID } = require('../../values/correlation-id')
 const event = require('./event')
 
 module.exports = {

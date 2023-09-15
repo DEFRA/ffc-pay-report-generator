@@ -1,11 +1,11 @@
-const extractedEvent = require('../../mocks/events/extracted')
-const enrichedEvent = require('../../mocks/events/enriched')
-const resetEvent = require('../../mocks/events/reset')
-const submittedEvent = require('../../mocks/events/submitted')
+const extractedEvent = require('../../../mocks/events/mi/extracted')
+const enrichedEvent = require('../../../mocks/events/mi/enriched')
+const resetEvent = require('../../../mocks/events/mi/reset')
+const submittedEvent = require('../../../mocks/events/mi/submitted')
 
-const { PAYMENT_ENRICHED_STATUS, PAYMENT_EXTRACTED_STATUS, PAYMENT_RESET_STATUS, PAYMENT_SUBMITTED_STATUS } = require('../../../app/constants/statuses')
+const { PAYMENT_ENRICHED_STATUS, PAYMENT_EXTRACTED_STATUS, PAYMENT_RESET_STATUS, PAYMENT_SUBMITTED_STATUS } = require('../../../../app/constants/statuses')
 
-const { getStatus } = require('../../../app/reports/mi-report/get-status')
+const { getStatus } = require('../../../../app/reports/report-processing/get-status')
 
 let events
 

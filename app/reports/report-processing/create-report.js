@@ -1,16 +1,21 @@
 const { writeFile } = require('../../storage')
 const { reportsConfig } = require('../../config')
-const { getEvents } = require('../shared/get-events')
+const { getEvents } = require('./get-events')
 const { groupEventsByCorrelationId } = require('./group-events-by-correlation-id')
 const { orderGroupedEvents } = require('./order-grouped-events')
 const { getReportLines } = require('./get-report-lines')
-const { convertToCSV } = require('../shared/convert-to-csv')
+const { convertToCSV } = require('./convert-to-csv')
+const { SUPPRESSED_REPORT } = require('../../constants/report-types')
+const { PAYMENT_SUPPRESSED } = require('../../constants/events')
 
-const createMIReport = async () => {
-  const events = await getEvents()
+const createReport = async (reportType) => {
+  let events = await getEvents()
+  if (reportType === SUPPRESSED_REPORT) {
+    events = events.filter(event => event.type === PAYMENT_SUPPRESSED)
+  }
   const groupedEvents = groupEventsByCorrelationId(events)
   const orderedEvents = orderGroupedEvents(groupedEvents)
-  const reportLines = getReportLines(orderedEvents)
+  const reportLines = getReportLines(orderedEvents, reportType)
   if (reportLines.length) {
     const csv = convertToCSV(reportLines)
     await writeFile(reportsConfig.miReportName, csv)
@@ -19,5 +24,5 @@ const createMIReport = async () => {
 }
 
 module.exports = {
-  createMIReport
+  createReport
 }
