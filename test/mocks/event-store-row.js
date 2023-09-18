@@ -2,7 +2,7 @@ const { PARTITION_KEY } = require('./values/partition-key')
 const { ROW_KEY } = require('./values/row-key')
 const { CATEGORY } = require('./values/category')
 
-const event = require('./events/mi/event')
+const event = require('./events/event')
 
 module.exports = {
   partitionKey: PARTITION_KEY,
