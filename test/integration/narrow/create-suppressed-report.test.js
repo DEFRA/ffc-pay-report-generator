@@ -9,7 +9,7 @@ const mockTableClient = {
 
 const { reportsConfig } = require('../../../app/config')
 const { stringifyEventData } = require('../../helpers/stringify-event-data')
-const { createMIReport } = require('../../../app/reports/mi/create')
+const { createSuppressedReport } = require('../../../app/reports/suppressed/create')
 
 let extractedEvent
 let enrichedEvent
@@ -34,12 +34,12 @@ describe('create mi report', () => {
   })
 
   test('should write report to blob storage', async () => {
-    await createMIReport()
+    await createSuppressedReport()
     expect(mockWriteFile).toHaveBeenCalledTimes(1)
   })
 
   test('should write report to blob storage with correct file name', async () => {
-    await createMIReport()
-    expect(mockWriteFile).toHaveBeenCalledWith(reportsConfig.miReportName, expect.any(String))
+    await createSuppressedReport()
+    expect(mockWriteFile).toHaveBeenCalledWith(reportsConfig.suppressedReportName, expect.any(String))
   })
 })
