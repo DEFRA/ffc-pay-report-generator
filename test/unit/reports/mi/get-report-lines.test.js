@@ -1,32 +1,32 @@
-jest.mock('../../../app/reports/mi-report/get-frn')
-const { getFrn: mockGetFrn } = require('../../../app/reports/mi-report/get-frn')
+jest.mock('../../../../app/reports/mi/get-frn')
+const { getFrn: mockGetFrn } = require('../../../../app/reports/mi/get-frn')
 
-jest.mock('../../../app/reports/mi-report/get-invoice-number')
-const { getInvoiceNumber: mockGetInvoiceNumber } = require('../../../app/reports/mi-report/get-invoice-number')
+jest.mock('../../../../app/reports/mi/get-invoice-number')
+const { getInvoiceNumber: mockGetInvoiceNumber } = require('../../../../app/reports/mi/get-invoice-number')
 
-jest.mock('../../../app/reports/mi-report/get-currency')
-const { getCurrency: mockGetCurrency } = require('../../../app/reports/mi-report/get-currency')
+jest.mock('../../../../app/reports/mi/get-currency')
+const { getCurrency: mockGetCurrency } = require('../../../../app/reports/mi/get-currency')
 
-jest.mock('../../../app/reports/mi-report/get-value')
-const { getValue: mockGetValue } = require('../../../app/reports/mi-report/get-value')
+jest.mock('../../../../app/reports/mi/get-value')
+const { getValue: mockGetValue } = require('../../../../app/reports/mi/get-value')
 
-jest.mock('../../../app/reports/mi-report/get-batch-export-date')
-const { getBatchExportDate: mockGetBatchExportDate } = require('../../../app/reports/mi-report/get-batch-export-date')
+jest.mock('../../../../app/reports/mi/get-batch-export-date')
+const { getBatchExportDate: mockGetBatchExportDate } = require('../../../../app/reports/mi/get-batch-export-date')
 
-jest.mock('../../../app/reports/mi-report/get-status')
-const { getStatus: mockGetStatus } = require('../../../app/reports/mi-report/get-status')
+jest.mock('../../../../app/reports/mi/get-status')
+const { getStatus: mockGetStatus } = require('../../../../app/reports/mi/get-status')
 
-const { TRANSACTION } = require('../../../app/constants/transaction')
-const { FRN } = require('../../mocks/values/frn')
-const { UNKNOWN } = require('../../../app/constants/unknown')
-const { INVOICE_NUMBER } = require('../../mocks/values/invoice-number')
-const { CURRENCY } = require('../../mocks/values/currency')
-const { VALUE } = require('../../mocks/values/value')
-const { DATE } = require('../../mocks/values/date')
-const { PAYMENT_ENRICHED_STATUS } = require('../../../app/constants/statuses')
-const { CORRELATION_ID } = require('../../mocks/values/correlation-id')
+const { TRANSACTION } = require('../../../../app/constants/transaction')
+const { FRN } = require('../../../mocks/values/frn')
+const { UNKNOWN } = require('../../../../app/constants/unknown')
+const { INVOICE_NUMBER } = require('../../../mocks/values/invoice-number')
+const { CURRENCY } = require('../../../mocks/values/currency')
+const { VALUE } = require('../../../mocks/values/value')
+const { DATE } = require('../../../mocks/values/date')
+const { PAYMENT_ENRICHED_STATUS } = require('../../../../app/constants/statuses')
+const { CORRELATION_ID } = require('../../../mocks/values/correlation-id')
 
-const { getReportLines } = require('../../../app/reports/mi-report/get-report-lines')
+const { getReportLines } = require('../../../../app/reports/mi/get-report-lines')
 
 let enrichedEvent
 let events
@@ -42,7 +42,7 @@ describe('get report lines', () => {
     mockGetBatchExportDate.mockReturnValue(DATE)
     mockGetStatus.mockReturnValue(PAYMENT_ENRICHED_STATUS)
 
-    enrichedEvent = JSON.parse(JSON.stringify(require('../../mocks/events/enriched')))
+    enrichedEvent = JSON.parse(JSON.stringify(require('../../../mocks/events/enriched')))
     events = [{ correlationId: CORRELATION_ID, events: [enrichedEvent] }]
   })
 

@@ -1,10 +1,10 @@
-const { VALUE } = require('../../mocks/values/value')
+const { VALUE } = require('../../../mocks/values/value')
 
-const { getValue } = require('../../../app/reports/mi-report/get-value')
+const { getValue } = require('../../../../app/reports/mi/get-value')
 
-const extractedEvent = require('../../mocks/events/extracted')
-const enrichedEvent = require('../../mocks/events/enriched')
-const submittedEvent = require('../../mocks/events/submitted')
+const extractedEvent = require('../../../mocks/events/extracted')
+const enrichedEvent = require('../../../mocks/events/enriched')
+const submittedEvent = require('../../../mocks/events/submitted')
 
 let events
 

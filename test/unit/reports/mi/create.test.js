@@ -1,28 +1,28 @@
-jest.mock('../../../app/reports/mi-report/get-events')
-const { getEvents: mockGetEvents } = require('../../../app/reports/mi-report/get-events')
+jest.mock('../../../../app/reports/mi/get-events')
+const { getEvents: mockGetEvents } = require('../../../../app/reports/mi/get-events')
 
-jest.mock('../../../app/reports/mi-report/group-events-by-correlation-id')
-const { groupEventsByCorrelationId: mockGroupEventsByCorrelationId } = require('../../../app/reports/mi-report/group-events-by-correlation-id')
+jest.mock('../../../../app/reports/mi/group-events-by-correlation-id')
+const { groupEventsByCorrelationId: mockGroupEventsByCorrelationId } = require('../../../../app/reports/mi/group-events-by-correlation-id')
 
-jest.mock('../../../app/reports/mi-report/order-grouped-events')
-const { orderGroupedEvents: mockOrderGroupedEvents } = require('../../../app/reports/mi-report/order-grouped-events')
+jest.mock('../../../../app/reports/mi/order-grouped-events')
+const { orderGroupedEvents: mockOrderGroupedEvents } = require('../../../../app/reports/mi/order-grouped-events')
 
-jest.mock('../../../app/reports/mi-report/get-report-lines')
-const { getReportLines: mockGetReportLines } = require('../../../app/reports/mi-report/get-report-lines')
+jest.mock('../../../../app/reports/mi/get-report-lines')
+const { getReportLines: mockGetReportLines } = require('../../../../app/reports/mi/get-report-lines')
 
-jest.mock('../../../app/reports/mi-report/convert-to-csv')
-const { convertToCSV: mockConvertToCSV } = require('../../../app/reports/mi-report/convert-to-csv')
+jest.mock('../../../../app/reports/convert-to-csv')
+const { convertToCSV: mockConvertToCSV } = require('../../../../app/reports/convert-to-csv')
 
-jest.mock('../../../app/storage')
-const { writeFile: mockWriteFile } = require('../../../app/storage')
+jest.mock('../../../../app/storage')
+const { writeFile: mockWriteFile } = require('../../../../app/storage')
 
-const { reportsConfig } = require('../../../app/config')
-const { createMIReport } = require('../../../app/reports/mi-report/create')
+const { reportsConfig } = require('../../../../app/config')
+const { createMIReport } = require('../../../../app/reports/mi/create')
 
-const event = require('../../mocks/events/event')
-const groupedEvent = require('../../mocks/events/grouped-event')
-const reportLine = require('../../mocks/report-lines/mi')
-const csv = require('../../mocks/csv')
+const event = require('../../../mocks/events/event')
+const groupedEvent = require('../../../mocks/events/grouped-event')
+const reportLine = require('../../../mocks/report-lines/mi')
+const csv = require('../../../mocks/csv')
 
 describe('create mi report', () => {
   beforeEach(() => {

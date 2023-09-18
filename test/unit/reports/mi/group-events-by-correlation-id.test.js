@@ -1,9 +1,9 @@
-const { CORRELATION_ID } = require('../../mocks/values/correlation-id')
+const { CORRELATION_ID } = require('../../../mocks/values/correlation-id')
 
-const { groupEventsByCorrelationId } = require('../../../app/reports/mi-report/group-events-by-correlation-id')
+const { groupEventsByCorrelationId } = require('../../../../app/reports/mi/group-events-by-correlation-id')
 
-const extractedEvent = require('../../mocks/events/extracted')
-const enrichedEvent = require('../../mocks/events/enriched')
+const extractedEvent = require('../../../mocks/events/extracted')
+const enrichedEvent = require('../../../mocks/events/enriched')
 
 let events
 
