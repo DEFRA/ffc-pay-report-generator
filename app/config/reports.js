@@ -2,7 +2,7 @@ const Joi = require('joi')
 
 const schema = Joi.object({
   miReportName: Joi.string().default('ffc-pay-mi-report-v2.csv'),
-  suppressedReportName: Joi.string().default('ffc-pay-suppressed-report-v2.csv')
+  suppressedReportName: Joi.string().default('ffc-pay-suppressed-report.csv')
 })
 
 const config = {

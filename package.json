@@ -24,7 +24,7 @@
     "joi": "17.7.1",
     "log-timestamp": "0.3.0",
     "moment": "2.29.4",
-    "simple-update-notifier": "^2.0.0"
+    "simple-update-notifier": "2.0.0"
   },
   "devDependencies": {
     "jest": "29.2.2",
