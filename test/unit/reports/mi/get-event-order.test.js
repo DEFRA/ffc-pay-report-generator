@@ -9,13 +9,14 @@ const {
   PAYMENT_QUALITY_CHECK_FAILED,
   PAYMENT_QUALITY_CHECK_PASSED,
   PAYMENT_RESET,
+  PAYMENT_SUPPRESSED,
   PAYMENT_PROCESSED,
   PAYMENT_SUBMITTED,
   PAYMENT_ACKNOWLEDGED,
   PAYMENT_SETTLED
-} = require('../../../app/constants/events')
+} = require('../../../../app/constants/events')
 
-const { getEventOrder } = require('../../../app/reports/mi-report/get-event-order')
+const { getEventOrder } = require('../../../../app/reports/mi/get-event-order')
 
 describe('get event order', () => {
   test('should return 1 for payment extracted event', () => {
@@ -68,23 +69,28 @@ describe('get event order', () => {
     expect(eventOrder).toEqual(10)
   })
 
-  test('should return 11 for payment processed event', () => {
-    const eventOrder = getEventOrder(PAYMENT_PROCESSED)
+  test('should return 11 for payment suppressed event', () => {
+    const eventOrder = getEventOrder(PAYMENT_SUPPRESSED)
     expect(eventOrder).toEqual(11)
   })
 
-  test('should return 12 for payment submitted event', () => {
-    const eventOrder = getEventOrder(PAYMENT_SUBMITTED)
+  test('should return 12 for payment processed event', () => {
+    const eventOrder = getEventOrder(PAYMENT_PROCESSED)
     expect(eventOrder).toEqual(12)
   })
 
-  test('should return 13 for payment acknowledged event', () => {
-    const eventOrder = getEventOrder(PAYMENT_ACKNOWLEDGED)
+  test('should return 13 for payment submitted event', () => {
+    const eventOrder = getEventOrder(PAYMENT_SUBMITTED)
     expect(eventOrder).toEqual(13)
   })
 
-  test('should return 14 for payment settled event', () => {
-    const eventOrder = getEventOrder(PAYMENT_SETTLED)
+  test('should return 14 for payment acknowledged event', () => {
+    const eventOrder = getEventOrder(PAYMENT_ACKNOWLEDGED)
     expect(eventOrder).toEqual(14)
+  })
+
+  test('should return 15 for payment settled event', () => {
+    const eventOrder = getEventOrder(PAYMENT_SETTLED)
+    expect(eventOrder).toEqual(15)
   })
 })

@@ -1,9 +1,9 @@
-const extractedEvent = require('../../mocks/events/extracted')
-const enrichedEvent = require('../../mocks/events/enriched')
+const extractedEvent = require('../../../mocks/events/extracted')
+const enrichedEvent = require('../../../mocks/events/enriched')
 
-const { UNKNOWN } = require('../../../app/constants/unknown')
+const { UNKNOWN } = require('../../../../app/constants/unknown')
 
-const { getInvoiceNumber } = require('../../../app/reports/mi-report/get-invoice-number')
+const { getInvoiceNumber } = require('../../../../app/reports/mi/get-invoice-number')
 
 const events = [extractedEvent, enrichedEvent]
 

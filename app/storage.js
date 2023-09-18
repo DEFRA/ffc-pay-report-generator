@@ -1,4 +1,3 @@
-
 const { DefaultAzureCredential } = require('@azure/identity')
 const { TableClient, odata } = require('@azure/data-tables')
 const { BlobServiceClient } = require('@azure/storage-blob')

@@ -4,7 +4,7 @@ const { PAYMENT_EVENT } = require('../../../app/constants/event-types')
 
 const { reportsConfig } = require('../../../app/config')
 const { getBlob } = require('../../helpers/get-blob')
-const { createMIReport } = require('../../../app/reports/mi-report')
+const { createMIReport } = require('../../../app/reports/mi/create')
 const { initialise, getClient } = require('../../../app/storage')
 
 let paymentClient
