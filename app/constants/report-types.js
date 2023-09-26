@@ -1,0 +1,4 @@
+module.exports = {
+  MI_REPORT: 'MI_REPORT',
+  SUPPRESSED_REPORT: 'SUPPRESSED_REPORT'
+}

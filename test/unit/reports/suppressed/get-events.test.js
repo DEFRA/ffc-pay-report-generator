@@ -1,5 +1,5 @@
-jest.mock('../../../app/storage')
-const { getClient: mockGetClient, odata: mockOdata } = require('../../../app/storage')
+jest.mock('../../../../app/storage')
+const { getClient: mockGetClient, odata: mockOdata } = require('../../../../app/storage')
 
 const mockListEntities = jest.fn()
 
@@ -7,27 +7,25 @@ const mockTableClient = {
   listEntities: mockListEntities
 }
 
-const { PAYMENT_EVENT } = require('../../../app/constants/event-types')
+const { PAYMENT_EVENT } = require('../../../../app/constants/event-types')
+const { PAYMENT_SUPPRESSED } = require('../../../../app/constants/events')
 
-const { stringifyEventData } = require('../../helpers/stringify-event-data')
+const { stringifyEventData } = require('../../../helpers/stringify-event-data')
 
-const { getEvents } = require('../../../app/reports/mi-report/get-events')
+const { getEvents } = require('../../../../app/reports/mi/get-events')
 
-let extractedEvent
-let enrichedEvent
+let suppressedEvent
 let events
 
 describe('get events', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
-    extractedEvent = JSON.parse(JSON.stringify(require('../../mocks/events/extracted')))
-    enrichedEvent = JSON.parse(JSON.stringify(require('../../mocks/events/enriched')))
+    suppressedEvent = JSON.parse(JSON.stringify(require('../../../mocks/events/suppressed')))
 
-    stringifyEventData(extractedEvent)
-    stringifyEventData(enrichedEvent)
+    stringifyEventData(suppressedEvent)
 
-    events = [extractedEvent, enrichedEvent]
+    events = [suppressedEvent]
 
     mockGetClient.mockReturnValue(mockTableClient)
     mockListEntities.mockReturnValue(events)
@@ -53,20 +51,19 @@ describe('get events', () => {
     expect(mockListEntities).toHaveBeenCalledTimes(1)
   })
 
-  test('should get payment events with correlation id category', async () => {
+  test('should get payment events with frn category and only suppressed events', async () => {
     await getEvents()
-    expect(mockListEntities).toHaveBeenCalledWith({ queryOptions: { filter: mockOdata`category eq 'correlationId'` } })
+    expect(mockListEntities).toHaveBeenCalledWith({ queryOptions: { filter: mockOdata`category eq 'frn' and type eq '${PAYMENT_SUPPRESSED}'` } })
   })
 
   test('should return all payment events', async () => {
     const result = await getEvents()
-    expect(result.length).toBe(2)
+    expect(result.length).toBe(1)
   })
 
   test('should convert event data to json', async () => {
     const result = await getEvents()
-    expect(result[0].data).toEqual(extractedEvent.data)
-    expect(result[1].data).toEqual(enrichedEvent.data)
+    expect(result[0].data).toEqual(suppressedEvent.data)
   })
 
   test('should return an empty array if no events', async () => {
