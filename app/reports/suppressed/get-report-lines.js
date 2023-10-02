@@ -12,7 +12,7 @@ const getReportLines = (events) => {
       paymentRequestNumber: event.data.paymentRequestNumber,
       deltaValue: convertToPounds(event.data.deltaValue),
       creditAP: convertToPounds(event.data.creditAP),
-      suppressedAR: event.data.suppressedAR,
+      suppressedAR: convertToPounds(event.data.suppressedAR),
       suppressed: moment(event.time).format(DATE_FORMAT)
     }))
 }
