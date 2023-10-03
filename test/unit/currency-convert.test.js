@@ -1,4 +1,4 @@
-const { convertToPence } = require('../../app/currency-convert')
+const { convertToPence, convertToPounds } = require('../../app/currency-convert')
 
 describe('convert currency', () => {
   test('converts 100 to pence', () => {
@@ -84,5 +84,15 @@ describe('convert currency', () => {
   test('returns undefined if boolean', () => {
     const result = convertToPence(Boolean())
     expect(result).toBeUndefined()
+  })
+
+  test('converts 10000 to pounds', () => {
+    const result = convertToPounds(10000)
+    expect(result).toEqual('100.00')
+  })
+
+  test('converts 10010 to pounds', () => {
+    const result = convertToPounds(10010)
+    expect(result).toEqual('100.10')
   })
 })
