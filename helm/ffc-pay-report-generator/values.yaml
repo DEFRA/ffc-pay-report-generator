@@ -22,8 +22,8 @@ container:
   nodeOptions: --max-old-space-size=8192
   requestMemory: 150Mi
   requestCpu: 120m
-  limitMemory: 500Mi
-  limitCpu: 120m
+  limitMemory: 1000Mi
+  limitCpu: 200m
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
   azureStorageAccountName: ffcpay
