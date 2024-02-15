@@ -1,20 +1,20 @@
-jest.mock('../../../../app/reports/mi/get-frn')
-const { getFrn: mockGetFrn } = require('../../../../app/reports/mi/get-frn')
+jest.mock('../../../../app/reports/shared/get-frn')
+const { getFrn: mockGetFrn } = require('../../../../app/reports/shared/get-frn')
 
-jest.mock('../../../../app/reports/mi/get-invoice-number')
-const { getInvoiceNumber: mockGetInvoiceNumber } = require('../../../../app/reports/mi/get-invoice-number')
+jest.mock('../../../../app/reports/shared/get-invoice-number')
+const { getInvoiceNumber: mockGetInvoiceNumber } = require('../../../../app/reports/shared/get-invoice-number')
 
-jest.mock('../../../../app/reports/mi/get-currency')
-const { getCurrency: mockGetCurrency } = require('../../../../app/reports/mi/get-currency')
+jest.mock('../../../../app/reports/shared/get-currency')
+const { getCurrency: mockGetCurrency } = require('../../../../app/reports/shared/get-currency')
 
 jest.mock('../../../../app/reports/mi/get-value')
 const { getValue: mockGetValue } = require('../../../../app/reports/mi/get-value')
 
-jest.mock('../../../../app/reports/mi/get-batch-export-date')
-const { getBatchExportDate: mockGetBatchExportDate } = require('../../../../app/reports/mi/get-batch-export-date')
+jest.mock('../../../../app/reports/shared/get-batch-export-date')
+const { getBatchExportDate: mockGetBatchExportDate } = require('../../../../app/reports/shared/get-batch-export-date')
 
-jest.mock('../../../../app/reports/mi/get-status')
-const { getStatus: mockGetStatus } = require('../../../../app/reports/mi/get-status')
+jest.mock('../../../../app/reports/shared/get-status')
+const { getStatus: mockGetStatus } = require('../../../../app/reports/shared/get-status')
 
 const { TRANSACTION } = require('../../../../app/constants/transaction')
 const { FRN } = require('../../../mocks/values/frn')

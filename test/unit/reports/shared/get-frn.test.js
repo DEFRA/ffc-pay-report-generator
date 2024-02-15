@@ -3,7 +3,7 @@ const enrichedEvent = require('../../../mocks/events/enriched')
 
 const { UNKNOWN } = require('../../../../app/constants/unknown')
 
-const { getFrn } = require('../../../../app/reports/mi/get-frn')
+const { getFrn } = require('../../../../app/reports/shared/get-frn')
 
 const events = [extractedEvent, enrichedEvent]
 

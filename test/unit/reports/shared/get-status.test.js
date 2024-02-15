@@ -5,7 +5,7 @@ const submittedEvent = require('../../../mocks/events/submitted')
 
 const { PAYMENT_ENRICHED_STATUS, PAYMENT_EXTRACTED_STATUS, PAYMENT_RESET_STATUS, PAYMENT_SUBMITTED_STATUS } = require('../../../../app/constants/statuses')
 
-const { getStatus } = require('../../../../app/reports/mi/get-status')
+const { getStatus } = require('../../../../app/reports/shared/get-status')
 
 let events
 
