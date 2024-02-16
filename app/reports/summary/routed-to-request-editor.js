@@ -1,8 +1,10 @@
-const { PAYMENT_PAUSED_PREFIX, PAYMENT_LEDGER_PREFIX } = require('../../constants/request-editor-prefixes')
+const { PAYMENT_PAUSED_DEBT, PAYMENT_PAUSED_LEDGER, PAYMENT_PAUSED_QUALITY_CHECK } = require('../../constants/events')
 
 const routedToRequestEditor = (events) => {
-  const lastEvent = events[events.length - 1].type
-  if (lastEvent.includes(PAYMENT_PAUSED_PREFIX) || lastEvent.includes(PAYMENT_LEDGER_PREFIX)) {
+  const pausedDebtEvent = events.find(event => event.type === PAYMENT_PAUSED_DEBT)
+  const pausedLedgerEvent = events.find(event => event.type === PAYMENT_PAUSED_LEDGER)
+  const pausedQCEvent = events.find(event => event.type === PAYMENT_PAUSED_QUALITY_CHECK)
+  if (pausedDebtEvent || pausedLedgerEvent || pausedQCEvent) {
     return 'Y'
   }
   return 'N'

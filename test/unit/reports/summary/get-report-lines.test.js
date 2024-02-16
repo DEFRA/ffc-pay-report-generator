@@ -114,19 +114,19 @@ describe('get report lines', () => {
 
   test('should return revenue', () => {
     const reportLines = getReportLines(events)
-    expect(reportLines[0].Revenue).toEqual(REVENUE)
+    expect(reportLines[0]['Revenue / Capital']).toEqual(REVENUE)
   })
 
   test('should return revenue as Capital if function returns capital', () => {
     mockGetRevenue.mockReturnValue(CAPITAL)
     const reportLines = getReportLines(events)
-    expect(reportLines[0].Revenue).toEqual(CAPITAL)
+    expect(reportLines[0]['Revenue / Capital']).toEqual(CAPITAL)
   })
 
   test('should return revenue as null if function returns null', () => {
     mockGetRevenue.mockReturnValue(null)
     const reportLines = getReportLines(events)
-    expect(reportLines[0].Revenue).toEqual(null)
+    expect(reportLines[0]['Revenue / Capital']).toEqual(null)
   })
 
   test('should return output of getYear as year', () => {
@@ -181,6 +181,11 @@ describe('get report lines', () => {
     expect(reportLines[0]['Batch Export Date']).toEqual(DATE)
   })
 
+  test('should return if routed to request editor', () => {
+    const reportLines = getReportLines(events)
+    expect(reportLines[0]['Routed To Request Editor']).toEqual(ROUTED)
+  })
+
   test('should return delta amount', () => {
     const reportLines = getReportLines(events)
     expect(reportLines[0]['Delta Amount']).toEqual(DELTA_VALUE)
@@ -190,11 +195,6 @@ describe('get report lines', () => {
     mockGetDeltaAmount.mockReturnValue(null)
     const reportLines = getReportLines(events)
     expect(reportLines[0]['Delta Amount']).toEqual(UNKNOWN)
-  })
-
-  test('should return if routed to request editor', () => {
-    const reportLines = getReportLines(events)
-    expect(reportLines[0]['Routed To Request Editor']).toEqual(ROUTED)
   })
 
   test('should return AP amount', () => {

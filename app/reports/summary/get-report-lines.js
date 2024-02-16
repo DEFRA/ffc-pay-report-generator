@@ -13,7 +13,7 @@ const { getAPAmount } = require('./get-ap-amount')
 const { getARAmount } = require('./get-ar-amount')
 const { getDebtType } = require('./get-debt-type')
 const { DATE_FORMAT } = require('../../constants/date-format')
-const { getStatus } = require('../shared/get-status')
+const { getCPATStatus } = require('./get-cpat-status')
 const { getRevenue } = require('./get-revenue')
 
 const getReportLines = (events) => {
@@ -22,7 +22,7 @@ const getReportLines = (events) => {
     FRN: getFrn(event.events),
     'Claim ID': event.events[0].data.contractNumber ?? UNKNOWN,
     'Agreement Number': event.events[0].data.agreementNumber,
-    Revenue: getRevenue(event.events),
+    'Revenue / Capital': getRevenue(event.events),
     Year: getYear(event.events),
     'Invoice Number': getInvoiceNumber(event.events),
     'Payment Currency': getCurrency(event.events),
@@ -31,12 +31,12 @@ const getReportLines = (events) => {
     'Batch ID': event.events[0].data.batch ?? TRANSACTION,
     'Batch Creator ID': event.events[0].data.sourceSystem,
     'Batch Export Date': getBatchExportDate(event.events),
-    'Delta Amount': getDeltaAmount(event.events) ?? UNKNOWN,
     'Routed To Request Editor': routedToRequestEditor(event.events),
+    'Delta Amount': getDeltaAmount(event.events, events) ?? UNKNOWN,
     'AP Amount': getAPAmount(event.events) ?? UNKNOWN,
     'AR Amount': getARAmount(event.events) ?? UNKNOWN,
     'Admin Or Irregular': getDebtType(event.events),
-    Status: getStatus(event.events),
+    Status: getCPATStatus(event.events),
     'Last Updated': moment(event.events[event.events.length - 1].time).format(DATE_FORMAT)
   }))
 }

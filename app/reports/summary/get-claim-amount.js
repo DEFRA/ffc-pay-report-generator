@@ -6,7 +6,8 @@ const getClaimAmount = (events) => {
   if (extractedEvent) {
     return convertToPence(extractedEvent.data.value)
   }
-  return null
+  // if no extractedEvent we should have events in pence value already.
+  return events[0]?.data.value ?? null
 }
 
 module.exports = {

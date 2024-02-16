@@ -1,41 +1,48 @@
+const { convertToPence } = require('../../../../app/currency-convert')
 const { getDeltaAmount } = require('../../../../app/reports/summary/get-delta-amount')
 
-const processedEvent = require('../../../mocks/events/processed')
-const submittedEvent = require('../../../mocks/events/submitted')
+const extractedEvent = require('../../../mocks/events/extracted')
 
 let events
-const ev1 = JSON.parse(JSON.stringify(processedEvent))
+let fullEvents
+const ev1 = JSON.parse(JSON.stringify(extractedEvent))
 ev1.data.value = 50000
-const ev2 = JSON.parse(JSON.stringify(processedEvent))
-ev2.data.debtType = -30000
-const ev3 = JSON.parse(JSON.stringify(submittedEvent))
-ev3.data.debtType = 15000
+ev1.data.paymentRequestNumber = 1
+const ev2 = JSON.parse(JSON.stringify(extractedEvent))
+ev2.data.value = 30000
+ev2.data.paymentRequestNumber = 2
 
 describe('get delta amount', () => {
   beforeEach(() => {
     events = []
+    fullEvents = []
   })
 
-  test('should return processed event value', () => {
+  test('should return event value', () => {
     events = [ev1]
-    const value = getDeltaAmount(events)
-    expect(value).toEqual(ev1.data.value)
+    fullEvents = [{
+      correlationId: 'made-up',
+      events: [ev1]
+    }]
+    const value = getDeltaAmount(events, fullEvents)
+    expect(value).toEqual(convertToPence(ev1.data.value))
   })
 
-  test('should return sum of processed event value', () => {
-    events = [ev1, ev2]
-    const value = getDeltaAmount(events)
-    expect(value).toEqual(ev1.data.value + ev2.data.value)
-  })
-
-  test('should return null if no extractedEvent', () => {
-    events = [ev3]
-    const value = getDeltaAmount(events)
-    expect(value).toEqual(null)
+  test('should return difference between two extracted events if two', () => {
+    events = [ev2]
+    fullEvents = [{
+      correlationId: 'made-up',
+      events: [ev2]
+    }, {
+      correlatationId: 'made-up-2',
+      events: [ev1]
+    }]
+    const value = getDeltaAmount(events, fullEvents)
+    expect(value).toEqual(convertToPence(ev2.data.value) - convertToPence(ev1.data.value))
   })
 
   test('should return null if no events', () => {
-    const value = getDeltaAmount(events)
+    const value = getDeltaAmount(events, fullEvents)
     expect(value).toEqual(null)
   })
 })
