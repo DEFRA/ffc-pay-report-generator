@@ -10,7 +10,7 @@ const createSummaryReport = async () => {
   const events = await getEvents()
   const groupedEvents = groupEventsByCorrelationId(events)
   const orderedEvents = orderGroupedEvents(groupedEvents)
-  const reportLines = getReportLines(orderedEvents)
+  const reportLines = await getReportLines(orderedEvents)
   if (reportLines.length) {
     const csv = convertToCSV(reportLines)
     await writeFile(reportsConfig.summaryReportName, csv)
