@@ -13,12 +13,12 @@ const { getAPAmount } = require('./get-ap-amount')
 const { getARAmount } = require('./get-ar-amount')
 const { getDebtType } = require('./get-debt-type')
 const { DATE_FORMAT } = require('../../constants/date-format')
-const { getCPATStatus } = require('./get-cpat-status')
+const { getTransactionStatus } = require('./get-transaction-status')
 const { getRevenue } = require('./get-revenue')
 
 const getReportLines = async (events) => {
   const reportLinePromises = events.map(async (event) => {
-    const statusPromise = getCPATStatus(event.events)
+    const statusPromise = getTransactionStatus(event.events)
     const status = await statusPromise
     return {
       ID: event.correlationId,

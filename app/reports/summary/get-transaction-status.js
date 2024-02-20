@@ -4,7 +4,7 @@ const { HOLD_EVENT } = require('../../constants/event-types')
 const { getClient, odata } = require('../../storage')
 const { getFrn } = require('../shared/get-frn')
 
-const getCPATStatus = async (events) => {
+const getTransactionStatus = async (events) => {
   const status = getStatus(events)
   if (status === PAYMENT_ENRICHED_STATUS) {
     // if a payment is stuck here it may be due to a hold
@@ -29,5 +29,5 @@ const getCPATStatus = async (events) => {
 }
 
 module.exports = {
-  getCPATStatus
+  getTransactionStatus
 }

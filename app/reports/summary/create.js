@@ -14,9 +14,9 @@ const createSummaryReport = async () => {
   if (reportLines.length) {
     const csv = convertToCSV(reportLines)
     await writeFile(reportsConfig.summaryReportName, csv)
-    console.log(`CPAT summary report created: ${reportsConfig.summaryReportName}`)
+    console.log(`Combined transaction report created: ${reportsConfig.summaryReportName}`)
   } else {
-    console.log('CPAT summary report not created, no data')
+    console.log('Combined transaction report not created, no data')
   }
 }
 

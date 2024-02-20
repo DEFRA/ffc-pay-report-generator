@@ -1,5 +1,5 @@
-jest.mock('../../../../app/reports/summary/get-cpat-status')
-const { getCPATStatus: mockGetCPATStatus } = require('../../../../app/reports/summary/get-cpat-status')
+jest.mock('../../../../app/reports/summary/get-transaction-status')
+const { getTransactionStatus: mockGetTransactionStatus } = require('../../../../app/reports/summary/get-transaction-status')
 
 jest.mock('../../../../app/reports/shared/get-frn')
 const { getFrn: mockGetFrn } = require('../../../../app/reports/shared/get-frn')
@@ -63,7 +63,7 @@ describe('get report lines', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
-    mockGetCPATStatus.mockReturnValue(PAYMENT_PROCESSED_STATUS)
+    mockGetTransactionStatus.mockReturnValue(PAYMENT_PROCESSED_STATUS)
     mockGetFrn.mockReturnValue(FRN)
     mockGetRevenue.mockReturnValue(REVENUE)
     mockGetYear.mockReturnValue(YEAR)
