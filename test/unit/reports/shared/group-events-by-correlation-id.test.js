@@ -1,6 +1,6 @@
 const { CORRELATION_ID } = require('../../../mocks/values/correlation-id')
 
-const { groupEventsByCorrelationId } = require('../../../../app/reports/mi/group-events-by-correlation-id')
+const { groupEventsByCorrelationId } = require('../../../../app/reports/shared/group-events-by-correlation-id')
 
 const extractedEvent = require('../../../mocks/events/extracted')
 const enrichedEvent = require('../../../mocks/events/enriched')

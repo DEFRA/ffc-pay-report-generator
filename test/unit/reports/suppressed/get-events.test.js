@@ -12,7 +12,7 @@ const { PAYMENT_SUPPRESSED } = require('../../../../app/constants/events')
 
 const { stringifyEventData } = require('../../../helpers/stringify-event-data')
 
-const { getEvents } = require('../../../../app/reports/mi/get-events')
+const { getEvents } = require('../../../../app/reports/shared/get-events')
 
 let suppressedEvent
 let events

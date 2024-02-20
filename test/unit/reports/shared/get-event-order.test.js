@@ -17,7 +17,7 @@ const {
   PAYMENT_SETTLED
 } = require('../../../../app/constants/events')
 
-const { getEventOrder } = require('../../../../app/reports/mi/get-event-order')
+const { getEventOrder } = require('../../../../app/reports/shared/get-event-order')
 
 describe('get event order', () => {
   test('should return 1 for payment extracted event', () => {

@@ -1,3 +1,3 @@
 module.exports = {
-  MARKETING_YEAR: 2023
+  MARKETING_YEAR: 2024
 }

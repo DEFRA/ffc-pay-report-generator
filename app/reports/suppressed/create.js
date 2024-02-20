@@ -11,6 +11,8 @@ const createSuppressedReport = async () => {
     const csv = convertToCSV(reportLines)
     await writeFile(reportsConfig.suppressedReportName, csv)
     console.log(`Suppressed report created: ${reportsConfig.suppressedReportName}`)
+  } else {
+    console.log('Suppressed report not created, no data')
   }
 }
 
