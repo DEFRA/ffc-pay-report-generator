@@ -1,6 +1,6 @@
-const { convertToCSV } = require('../../../../app/reports/convert-to-csv')
+const { convertToCSV } = require('../../../app/reports/convert-to-csv')
 
-const reportLine = require('../../../mocks/report-lines/mi')
+const reportLine = require('../../mocks/report-lines/mi')
 const reportLines = [reportLine, reportLine]
 
 const createArrayFromCsv = (csv) => {
