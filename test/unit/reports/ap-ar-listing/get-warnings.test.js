@@ -56,7 +56,7 @@ describe('get warnings', () => {
   })
 
   test('should get events if no filter, order by time', async () => {
-    await getWarnings()
+    await getWarnings(null)
     expect(mockListEntities).toHaveBeenCalledWith({ queryOptions: { orderby: mockOdata`time desc` } })
   })
 

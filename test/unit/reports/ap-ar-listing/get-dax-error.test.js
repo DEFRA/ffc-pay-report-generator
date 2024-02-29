@@ -36,8 +36,20 @@ describe('get DAX error', () => {
     expect(value).toEqual(warning.data.message)
   })
 
+  test('should return null if warning has no correlationId', async () => {
+    mockGetWarnings.mockReturnValue([{ data: { frn: FRN, message: warning.data.message } }])
+    const value = await getDaxError(events, CORRELATION_ID)
+    expect(value).toEqual(null)
+  })
+
+  test('should return null if warning has different correlationId', async () => {
+    mockGetWarnings.mockReturnValue([{ data: { correlationId: 'random', frn: FRN, message: warning.data.message } }])
+    const value = await getDaxError(events, CORRELATION_ID)
+    expect(value).toEqual(null)
+  })
+
   test('should return null if warning has no message', async () => {
-    mockGetWarnings.mockReturnValue([{ data: { frn: FRN } }])
+    mockGetWarnings.mockReturnValue([{ data: { correlationId: CORRELATION_ID, frn: FRN } }])
     const value = await getDaxError(events, CORRELATION_ID)
     expect(value).toEqual(null)
   })

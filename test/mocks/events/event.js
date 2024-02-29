@@ -14,6 +14,7 @@ const { PAYMENT_REQUEST_NUMBER } = require('../values/payment-request-number')
 const { MARKETING_YEAR } = require('../values/marketing-year')
 const { SOURCE_SYSTEM } = require('../values/source-system')
 const { AGREEMENT_NUMBER } = require('../values/agreement-number')
+const { VALUE } = require('../values/value')
 
 module.exports = {
   specversion: SPEC_VERSION,
@@ -32,6 +33,7 @@ module.exports = {
     paymentRequestNumber: PAYMENT_REQUEST_NUMBER,
     marketingYear: MARKETING_YEAR,
     sourceSystem: SOURCE_SYSTEM,
-    agreementNumber: AGREEMENT_NUMBER
+    agreementNumber: AGREEMENT_NUMBER,
+    settledValue: VALUE
   }
 }
