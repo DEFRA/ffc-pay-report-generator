@@ -1,10 +1,10 @@
 jest.mock('../../../../app/reports/ap-listing/get-warning')
-const { getWarning: mockGetWarning } = require('../../../../app/reports/ap-listing/get-warning')
+const { getWarning: mockGetWarning } = require('../../../../app/reports/ap-ar-listing/get-warnings')
 
 jest.mock('../../../../app/reports/shared/get-frn')
 const { getFrn: mockGetFrn } = require('../../../../app/reports/shared/get-frn')
 
-const { getDaxError } = require('../../../../app/reports/ap-listing/get-dax-error')
+const { getDaxError } = require('../../../../app/reports/ap-ar-listing/get-dax-error')
 
 const settledEvent = require('../../../mocks/events/settled')
 const { CORRELATION_ID } = require('../../../mocks/values/correlation-id')

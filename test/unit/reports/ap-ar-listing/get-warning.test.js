@@ -11,7 +11,7 @@ const { WARNING_EVENT } = require('../../../../app/constants/event-types')
 
 const { stringifyEventData } = require('../../../helpers/stringify-event-data')
 
-const { getWarning } = require('../../../../app/reports/ap-listing/get-warning')
+const { getWarning } = require('../../../../app/reports/ap-ar-listing/get-warnings')
 const { CORRELATION_ID } = require('../../../mocks/values/correlation-id')
 
 let warningEvent

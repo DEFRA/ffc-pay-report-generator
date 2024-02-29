@@ -1,7 +1,7 @@
 const submittedEvent = require('../../../mocks/events/submitted')
 const acknowledgedEvent = require('../../../mocks/events/acknowledged')
 const settledEvent = require('../../../mocks/events/settled')
-const { getFilename } = require('../../../../app/reports/ap-listing/get-filename')
+const { getFilename } = require('../../../../app/reports/ap-ar-listing/get-filename')
 
 let events
 

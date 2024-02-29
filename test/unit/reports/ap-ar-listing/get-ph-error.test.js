@@ -1,7 +1,7 @@
 jest.mock('../../../../app/reports/ap-listing/get-warning')
-const { getWarning: mockGetWarning } = require('../../../../app/reports/ap-listing/get-warning')
+const { getWarning: mockGetWarning } = require('../../../../app/reports/ap-ar-listing/get-warnings')
 
-const { getPHError } = require('../../../../app/reports/ap-listing/get-ph-error')
+const { getPHError } = require('../../../../app/reports/ap-ar-listing/get-ph-error')
 
 const ackEvent = require('../../../mocks/events/acknowledged')
 const settledEvent = require('../../../mocks/events/settled')

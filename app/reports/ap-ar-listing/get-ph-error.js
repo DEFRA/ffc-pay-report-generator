@@ -1,6 +1,6 @@
-const { odata } = require('../../storage')
 const { PAYMENT_ACKNOWLEDGED, PAYMENT_SETTLED } = require('../../constants/events')
-const { getWarning } = require('./get-warning')
+const { getWarnings } = require('./get-warnings')
+const { getFilename } = require('./get-filename')
 
 const getPHError = async (events, correlationId) => {
   const acknowledgedEvent = events.find(event => event.type === PAYMENT_ACKNOWLEDGED)
@@ -8,10 +8,14 @@ const getPHError = async (events, correlationId) => {
   if (acknowledgedEvent || settledEvent) {
     return null
   }
-  const filter = odata`JSON.parse(data).correlationId eq ${correlationId}`
-  const warning = await getWarning(filter)
-  if (warning) {
-    return warning.data.message ?? null
+  const filename = getFilename(events)
+  const warnings = await getWarnings()
+  if (warnings) {
+    for (const warning of warnings) {
+      if (warning.data.correlationId === correlationId || warning.subject === filename) {
+        return warning.data.message ?? null
+      }
+    }
   }
   return null
 }

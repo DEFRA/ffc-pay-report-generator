@@ -1,5 +1,5 @@
 jest.mock('../../../../app/reports/ap-listing/get-filename')
-const { getFilename: mockGetFilename } = require('../../../../app/reports/ap-listing/get-filename')
+const { getFilename: mockGetFilename } = require('../../../../app/reports/ap-ar-listing/get-filename')
 
 jest.mock('../../../../app/reports/shared/get-status')
 const { getStatus: mockGetStatus } = require('../../../../app/reports/shared/get-status')
@@ -8,19 +8,19 @@ jest.mock('../../../../app/reports/shared/get-frn')
 const { getFrn: mockGetFrn } = require('../../../../app/reports/shared/get-frn')
 
 jest.mock('../../../../app/reports/ap-listing/get-invoice-number')
-const { getInvoiceNumber: mockGetInvoiceNumber } = require('../../../../app/reports/ap-listing/get-invoice-number')
+const { getInvoiceNumber: mockGetInvoiceNumber } = require('../../../../app/reports/ap-ar-listing/get-invoice-number')
 
 jest.mock('../../../../app/reports/ap-listing/get-value')
-const { getValue: mockGetValue } = require('../../../../app/reports/ap-listing/get-value')
+const { getValue: mockGetValue } = require('../../../../app/reports/ap-ar-listing/get-value')
 
 jest.mock('../../../../app/reports/ap-listing/is-imported')
-const { isImported: mockIsImported } = require('../../../../app/reports/ap-listing/is-imported')
+const { isImported: mockIsImported } = require('../../../../app/reports/ap-ar-listing/is-imported')
 
 jest.mock('../../../../app/reports/ap-listing/get-ph-error')
-const { getPHError: mockGetPHError } = require('../../../../app/reports/ap-listing/get-ph-error')
+const { getPHError: mockGetPHError } = require('../../../../app/reports/ap-ar-listing/get-ph-error')
 
 jest.mock('../../../../app/reports/ap-listing/get-dax-error')
-const { getDaxError: mockGetDaxError } = require('../../../../app/reports/ap-listing/get-dax-error')
+const { getDaxError: mockGetDaxError } = require('../../../../app/reports/ap-ar-listing/get-dax-error')
 
 const { FRN } = require('../../../mocks/values/frn')
 const { UNKNOWN } = require('../../../../app/constants/unknown')
@@ -30,7 +30,7 @@ const { DATE } = require('../../../mocks/values/date')
 const { PAYMENT_ENRICHED_STATUS } = require('../../../../app/constants/statuses')
 const { CORRELATION_ID } = require('../../../mocks/values/correlation-id')
 
-const { getReportLines } = require('../../../../app/reports/ap-listing/get-report-lines')
+const { getReportLines } = require('../../../../app/reports/ap-ar-listing/get-report-lines')
 const { FILENAME } = require('../../../mocks/values/filename')
 
 let enrichedEvent

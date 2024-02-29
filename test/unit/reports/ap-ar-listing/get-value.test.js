@@ -1,4 +1,4 @@
-const { getValue } = require('../../../../app/reports/ap-listing/get-value')
+const { getValue } = require('../../../../app/reports/ap-ar-listing/get-value')
 
 const extractedEvent = require('../../../mocks/events/extracted')
 const enrichedEvent = require('../../../mocks/events/enriched')
@@ -24,9 +24,9 @@ describe('get value', () => {
     expect(value).toEqual(extractedEvent.data.value)
   })
 
-  test('should return last event value if type of event does not exist', () => {
+  test('should returnnull if type of event does not exist', () => {
     events = [submittedEvent]
     const value = getValue(events, PAYMENT_EXTRACTED)
-    expect(value).toEqual(submittedEvent.data.value)
+    expect(value).toEqual(null)
   })
 })

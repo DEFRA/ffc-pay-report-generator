@@ -1,4 +1,4 @@
-const { isImported } = require('../../../../app/reports/ap-listing/is-imported')
+const { isImported } = require('../../../../app/reports/ap-ar-listing/is-imported')
 const ackEvent = require('../../../mocks/events/acknowledged')
 const settledEvent = require('../../../mocks/events/settled')
 const processedEvent = require('../../../mocks/events/processed')
