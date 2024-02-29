@@ -12,7 +12,6 @@ const createAPARListingReport = async () => {
   const events = await getEvents()
   const groupedEvents = groupEventsByCorrelationId(events)
   const orderedEvents = orderGroupedEvents(groupedEvents)
-  console.log(orderedEvents)
   const { apEvents, arEvents } = splitAPAREvents(orderedEvents)
   if (apEvents.length) {
     const apReportLines = await getReportLines(apEvents)
