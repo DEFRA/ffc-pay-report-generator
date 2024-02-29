@@ -11,13 +11,13 @@ const { WARNING_EVENT } = require('../../../../app/constants/event-types')
 
 const { stringifyEventData } = require('../../../helpers/stringify-event-data')
 
-const { getWarning } = require('../../../../app/reports/ap-ar-listing/get-warnings')
+const { getWarnings } = require('../../../../app/reports/ap-ar-listing/get-warnings')
 const { CORRELATION_ID } = require('../../../mocks/values/correlation-id')
 
 let warningEvent
 let filter
 
-describe('get warning', () => {
+describe('get warnings', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
@@ -31,43 +31,48 @@ describe('get warning', () => {
   })
 
   test('should get client', async () => {
-    await getWarning(filter)
+    await getWarnings(filter)
     expect(mockGetClient).toHaveBeenCalledTimes(1)
   })
 
   test('should get client once', async () => {
-    await getWarning(filter)
+    await getWarnings(filter)
     expect(mockGetClient).toHaveBeenCalledTimes(1)
   })
 
   test('should get client with warning event type', async () => {
-    await getWarning(filter)
+    await getWarnings(filter)
     expect(mockGetClient).toHaveBeenCalledWith(WARNING_EVENT)
   })
 
   test('should get events once', async () => {
-    await getWarning(filter)
+    await getWarnings(filter)
     expect(mockListEntities).toHaveBeenCalledTimes(1)
   })
 
-  test('should get events with given filter, order by time and return most recent', async () => {
-    await getWarning(filter)
-    expect(mockListEntities).toHaveBeenCalledWith({ queryOptions: { filter, orderby: mockOdata`time desc`, top: 1 } })
+  test('should get events with given filter, order by time', async () => {
+    await getWarnings(filter)
+    expect(mockListEntities).toHaveBeenCalledWith({ queryOptions: { filter, orderby: mockOdata`time desc` } })
   })
 
-  test('should return one event', async () => {
-    const result = await getWarning(filter)
-    expect(result).toBe(warningEvent)
+  test('should get events if no filter, order by time', async () => {
+    await getWarnings()
+    expect(mockListEntities).toHaveBeenCalledWith({ queryOptions: { orderby: mockOdata`time desc` } })
   })
 
-  test('should convert event data to json', async () => {
-    const result = await getWarning(filter)
-    expect(result.data).toEqual(warningEvent.data)
+  test('should return events an array', async () => {
+    const result = await getWarnings(filter)
+    expect(result).toEqual([warningEvent])
   })
 
-  test('should return null if no warning', async () => {
+  test('should convert event data to json for each', async () => {
+    const result = await getWarnings(filter)
+    expect(result[0].data).toEqual(warningEvent.data)
+  })
+
+  test('should return empty array if no warning', async () => {
     mockListEntities.mockReturnValue([])
-    const result = await getWarning(filter)
-    expect(result).toBe(null)
+    const result = await getWarnings(filter)
+    expect(result).toEqual([])
   })
 })

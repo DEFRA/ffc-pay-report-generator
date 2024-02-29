@@ -21,7 +21,7 @@ describe('get value', () => {
   test('should return extracted value converted to pence if extracted type provided', () => {
     events = [extractedEvent]
     const value = getValue(events, PAYMENT_EXTRACTED)
-    expect(value).toEqual(extractedEvent.data.value)
+    expect(value).toEqual(extractedEvent.data.value * 100)
   })
 
   test('should returnnull if type of event does not exist', () => {

@@ -13,16 +13,16 @@ const createAPARListingReport = async () => {
   const groupedEvents = groupEventsByCorrelationId(events)
   const orderedEvents = orderGroupedEvents(groupedEvents)
   const { apEvents, arEvents } = splitAPAREvents(orderedEvents)
-  if (apEvents.length) {
-    const apReportLines = await getReportLines(apEvents)
+  const apReportLines = await getReportLines(apEvents)
+  if (apReportLines.length) {
     const csv = convertToCSV(apReportLines, AP_REPORT)
     await writeFile(reportsConfig.apListingReportName, csv)
     console.log(`AP listing report created: ${reportsConfig.apListingReportName}`)
   } else {
     console.log('AP listing report not created, no data')
   }
-  if (arEvents.length) {
-    const arReportLines = await getReportLines(arEvents, AR_REPORT)
+  const arReportLines = await getReportLines(arEvents, AR_REPORT)
+  if (arReportLines.length) {
     const csv = convertToCSV(arReportLines)
     await writeFile(reportsConfig.arListingReportName, csv)
     console.log(`AR listing report created: ${reportsConfig.arListingReportName}`)

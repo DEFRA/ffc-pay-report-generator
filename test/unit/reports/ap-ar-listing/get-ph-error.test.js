@@ -1,5 +1,5 @@
-jest.mock('../../../../app/reports/ap-listing/get-warning')
-const { getWarning: mockGetWarning } = require('../../../../app/reports/ap-ar-listing/get-warnings')
+jest.mock('../../../../app/reports/ap-ar-listing/get-warnings')
+const { getWarnings: mockGetWarnings } = require('../../../../app/reports/ap-ar-listing/get-warnings')
 
 const { getPHError } = require('../../../../app/reports/ap-ar-listing/get-ph-error')
 
@@ -14,7 +14,7 @@ let events
 describe('get PH error', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    mockGetWarning.mockReturnValue(warning)
+    mockGetWarnings.mockReturnValue([warning])
     events = []
   })
 
@@ -32,7 +32,7 @@ describe('get PH error', () => {
 
   test('should call getWarning if neither event', async () => {
     await getPHError(events, CORRELATION_ID)
-    expect(mockGetWarning).toHaveBeenCalled()
+    expect(mockGetWarnings).toHaveBeenCalled()
   })
 
   test('should return warning message', async () => {
@@ -41,13 +41,13 @@ describe('get PH error', () => {
   })
 
   test('should return null if warning has no message', async () => {
-    mockGetWarning.mockReturnValue({ data: { frn: FRN } })
+    mockGetWarnings.mockReturnValue([{ data: { frn: FRN } }])
     const value = await getPHError(events, CORRELATION_ID)
     expect(value).toEqual(null)
   })
 
   test('should return null if no warning', async () => {
-    mockGetWarning.mockReturnValue(null)
+    mockGetWarnings.mockReturnValue(null)
     const value = await getPHError(events, CORRELATION_ID)
     expect(value).toEqual(null)
   })

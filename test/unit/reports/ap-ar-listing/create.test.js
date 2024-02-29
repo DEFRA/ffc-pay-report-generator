@@ -7,7 +7,10 @@ const { groupEventsByCorrelationId: mockGroupEventsByCorrelationId } = require('
 jest.mock('../../../../app/reports/shared/order-grouped-events')
 const { orderGroupedEvents: mockOrderGroupedEvents } = require('../../../../app/reports/shared/order-grouped-events')
 
-jest.mock('../../../../app/reports/ap-listing/get-report-lines')
+jest.mock('../../../../app/reports/ap-ar-listing/split-ap-ar-events')
+const { splitAPAREvents: mockSplitAPAREvents } = require('../../../../app/reports/ap-ar-listing/split-ap-ar-events')
+
+jest.mock('../../../../app/reports/ap-ar-listing/get-report-lines')
 const { getReportLines: mockGetReportLines } = require('../../../../app/reports/ap-ar-listing/get-report-lines')
 
 jest.mock('../../../../app/reports/convert-to-csv')
@@ -21,17 +24,19 @@ const { createAPARListingReport } = require('../../../../app/reports/ap-ar-listi
 
 const event = require('../../../mocks/events/event')
 const groupedEvent = require('../../../mocks/events/grouped-event')
-const reportLine = require('../../../mocks/report-lines/ap')
+const apReportLine = require('../../../mocks/report-lines/ap')
 const csv = require('../../../mocks/csv')
+const { AP_REPORT } = require('../../../../app/constants/report-types')
 
-describe('create ap report', () => {
+describe('create ap + ar reports', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
     mockGetEvents.mockResolvedValue([event])
     mockGroupEventsByCorrelationId.mockReturnValue([groupedEvent])
     mockOrderGroupedEvents.mockReturnValue([groupedEvent])
-    mockGetReportLines.mockReturnValue([reportLine])
+    mockSplitAPAREvents.mockReturnValue({ apEvents: [groupedEvent], arEvents: [groupedEvent] })
+    mockGetReportLines.mockReturnValue([apReportLine])
     mockConvertToCSV.mockReturnValue(csv)
   })
 
@@ -60,24 +65,34 @@ describe('create ap report', () => {
     expect(mockOrderGroupedEvents).toHaveBeenCalledTimes(1)
   })
 
+  test('should split ap and ar events', async () => {
+    await createAPARListingReport()
+    expect(mockSplitAPAREvents).toHaveBeenCalledWith([groupedEvent])
+  })
+
+  test('should split ap and ar events once', async () => {
+    await createAPARListingReport()
+    expect(mockSplitAPAREvents).toHaveBeenCalledTimes(1)
+  })
+
   test('should get report lines', async () => {
     await createAPARListingReport()
     expect(mockGetReportLines).toHaveBeenCalledWith([groupedEvent])
   })
 
-  test('should get report lines once', async () => {
+  test('should get report lines twice', async () => {
     await createAPARListingReport()
-    expect(mockGetReportLines).toHaveBeenCalledTimes(1)
+    expect(mockGetReportLines).toHaveBeenCalledTimes(2)
   })
 
   test('should convert report lines to csv if report lines', async () => {
     await createAPARListingReport()
-    expect(mockConvertToCSV).toHaveBeenCalledWith([reportLine])
+    expect(mockConvertToCSV).toHaveBeenCalledWith([apReportLine], AP_REPORT)
   })
 
-  test('should convert report lines to csv once if report lines', async () => {
+  test('should convert report lines to csv twice if report lines', async () => {
     await createAPARListingReport()
-    expect(mockConvertToCSV).toHaveBeenCalledTimes(1)
+    expect(mockConvertToCSV).toHaveBeenCalledTimes(2)
   })
 
   test('should not convert report lines to csv if no report lines', async () => {
@@ -86,17 +101,22 @@ describe('create ap report', () => {
     expect(mockConvertToCSV).not.toHaveBeenCalled()
   })
 
+  test('should write csv twice if report lines', async () => {
+    await createAPARListingReport()
+    expect(mockWriteFile).toHaveBeenCalledTimes(2)
+  })
+
   test('should write csv to ap report file if report lines', async () => {
     await createAPARListingReport()
     expect(mockWriteFile).toHaveBeenCalledWith(reportsConfig.apListingReportName, csv)
   })
 
-  test('should write csv to ap report file once if report lines', async () => {
+  test('should write csv to ar report file if report lines', async () => {
     await createAPARListingReport()
-    expect(mockWriteFile).toHaveBeenCalledTimes(1)
+    expect(mockWriteFile).toHaveBeenCalledWith(reportsConfig.arListingReportName, csv)
   })
 
-  test('should not write csv to ap report file if no report lines', async () => {
+  test('should not write csv file if no report lines', async () => {
     mockGetReportLines.mockReturnValue([])
     await createAPARListingReport()
     expect(mockWriteFile).not.toHaveBeenCalled()

@@ -1,5 +1,5 @@
-jest.mock('../../../../app/reports/ap-listing/get-warning')
-const { getWarning: mockGetWarning } = require('../../../../app/reports/ap-ar-listing/get-warnings')
+jest.mock('../../../../app/reports/ap-ar-listing/get-warnings')
+const { getWarnings: mockGetWarnings } = require('../../../../app/reports/ap-ar-listing/get-warnings')
 
 jest.mock('../../../../app/reports/shared/get-frn')
 const { getFrn: mockGetFrn } = require('../../../../app/reports/shared/get-frn')
@@ -16,7 +16,7 @@ let events
 describe('get DAX error', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    mockGetWarning.mockReturnValue(warning)
+    mockGetWarnings.mockReturnValue([warning])
     events = []
   })
 
@@ -28,7 +28,7 @@ describe('get DAX error', () => {
 
   test('should call getWarning if no settled event', async () => {
     await getDaxError(events, CORRELATION_ID)
-    expect(mockGetWarning).toHaveBeenCalled()
+    expect(mockGetWarnings).toHaveBeenCalled()
   })
 
   test('should return warning message', async () => {
@@ -37,19 +37,19 @@ describe('get DAX error', () => {
   })
 
   test('should return null if warning has no message', async () => {
-    mockGetWarning.mockReturnValue({ data: { frn: FRN } })
+    mockGetWarnings.mockReturnValue([{ data: { frn: FRN } }])
     const value = await getDaxError(events, CORRELATION_ID)
     expect(value).toEqual(null)
   })
 
   test('should call get FRN if no warning returns', async () => {
-    mockGetWarning.mockReturnValue(null)
+    mockGetWarnings.mockReturnValue(null)
     await getDaxError(events, CORRELATION_ID)
     expect(mockGetFrn).toHaveBeenCalledWith(events)
   })
 
   test('should return null if no warnings return', async () => {
-    mockGetWarning.mockReturnValue(null)
+    mockGetWarnings.mockReturnValue(null)
     const value = await getDaxError(events, CORRELATION_ID)
     expect(value).toEqual(null)
   })
