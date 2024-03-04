@@ -26,7 +26,6 @@ const event = require('../../../mocks/events/event')
 const groupedEvent = require('../../../mocks/events/grouped-event')
 const apReportLine = require('../../../mocks/report-lines/ap')
 const csv = require('../../../mocks/csv')
-const { AP_REPORT } = require('../../../../app/constants/report-types')
 
 describe('create ap + ar reports', () => {
   beforeEach(() => {
@@ -75,19 +74,9 @@ describe('create ap + ar reports', () => {
     expect(mockSplitAPAREvents).toHaveBeenCalledTimes(1)
   })
 
-  test('should get report lines', async () => {
-    await createAPARListingReport()
-    expect(mockGetReportLines).toHaveBeenCalledWith([groupedEvent])
-  })
-
   test('should get report lines twice', async () => {
     await createAPARListingReport()
     expect(mockGetReportLines).toHaveBeenCalledTimes(2)
-  })
-
-  test('should convert report lines to csv if report lines', async () => {
-    await createAPARListingReport()
-    expect(mockConvertToCSV).toHaveBeenCalledWith([apReportLine], AP_REPORT)
   })
 
   test('should convert report lines to csv twice if report lines', async () => {

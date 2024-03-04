@@ -15,6 +15,7 @@ const { MARKETING_YEAR } = require('../values/marketing-year')
 const { SOURCE_SYSTEM } = require('../values/source-system')
 const { AGREEMENT_NUMBER } = require('../values/agreement-number')
 const { VALUE } = require('../values/value')
+const { LEDGER } = require('../values/ledger')
 
 module.exports = {
   specversion: SPEC_VERSION,
@@ -34,6 +35,7 @@ module.exports = {
     marketingYear: MARKETING_YEAR,
     sourceSystem: SOURCE_SYSTEM,
     agreementNumber: AGREEMENT_NUMBER,
-    settledValue: VALUE
+    settledValue: VALUE,
+    ledger: LEDGER
   }
 }

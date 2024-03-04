@@ -13,9 +13,9 @@ const createAPARListingReport = async () => {
   const groupedEvents = groupEventsByCorrelationId(events)
   const orderedEvents = orderGroupedEvents(groupedEvents)
   const { apEvents, arEvents } = splitAPAREvents(orderedEvents)
-  const apReportLines = await getReportLines(apEvents)
+  const apReportLines = await getReportLines(apEvents, AP_REPORT)
   if (apReportLines.length) {
-    const csv = convertToCSV(apReportLines, AP_REPORT)
+    const csv = convertToCSV(apReportLines)
     await writeFile(reportsConfig.apListingReportName, csv)
     console.log(`AP listing report created: ${reportsConfig.apListingReportName}`)
   } else {
