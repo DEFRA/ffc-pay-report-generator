@@ -21,6 +21,26 @@ describe('split AP and AR events', () => {
     expect(arEvents).toEqual([])
   })
 
+  test('should return multiple AP events if two submitted with A and B invoice', () => {
+    const submittedEventA = JSON.parse(JSON.stringify(submittedEvent))
+    submittedEventA.data.invoiceNumber = 'S00000001A000001V001'
+    const submittedEventB = JSON.parse(JSON.stringify(submittedEvent))
+    submittedEventB.data.invoiceNumber = 'S00000001B000001V001'
+    events = [{
+      correlationId: CORRELATION_ID,
+      events: [submittedEventA, submittedEventB, acknowledgedEvent, settledEvent]
+    }]
+    const { apEvents, arEvents } = splitAPAREvents(events)
+    expect(apEvents).toEqual([{
+      correlationId: CORRELATION_ID,
+      events: [submittedEventA, acknowledgedEvent, settledEvent]
+    }, {
+      correlationId: CORRELATION_ID,
+      events: [submittedEventB, acknowledgedEvent, settledEvent]
+    }])
+    expect(arEvents).toEqual([])
+  })
+
   test('should return both AP & AR events if AR', () => {
     const submittedAREvent = JSON.parse(JSON.stringify(submittedEvent))
     submittedAREvent.data.ledger = 'AR'
