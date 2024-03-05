@@ -11,7 +11,7 @@ const getErrors = async (events, correlationId) => {
   const settledEvent = events.find(event => event.type === PAYMENT_SETTLED)
   if (!settledEvent) {
     const acknowledgedEvent = events.find(event => event.type === PAYMENT_ACKNOWLEDGED)
-    const warnings = getWarnings(events, acknowledgedEvent)
+    const warnings = await getWarnings(events, acknowledgedEvent)
     const frn = getFrn(events)
     const filename = getFilename(events)
     for (const warning of warnings) {
