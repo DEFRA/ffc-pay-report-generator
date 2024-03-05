@@ -19,11 +19,8 @@ const { getSettledValue: mockGetSettledValue } = require('../../../../app/report
 jest.mock('../../../../app/reports/ap-ar-listing/is-imported')
 const { isImported: mockIsImported } = require('../../../../app/reports/ap-ar-listing/is-imported')
 
-jest.mock('../../../../app/reports/ap-ar-listing/get-ph-error')
-const { getPHError: mockGetPHError } = require('../../../../app/reports/ap-ar-listing/get-ph-error')
-
-jest.mock('../../../../app/reports/ap-ar-listing/get-dax-error')
-const { getDaxError: mockGetDaxError } = require('../../../../app/reports/ap-ar-listing/get-dax-error')
+jest.mock('../../../../app/reports/ap-ar-listing/get-errors')
+const { getErrors: mockGetErrors } = require('../../../../app/reports/ap-ar-listing/get-errors')
 
 const { FRN } = require('../../../mocks/values/frn')
 const { UNKNOWN } = require('../../../../app/constants/unknown')
@@ -51,8 +48,7 @@ describe('get report lines', () => {
     mockGetSettledValue.mockReturnValue(VALUE)
     mockGetStatus.mockReturnValue(PAYMENT_ENRICHED_STATUS)
     mockIsImported.mockReturnValue('Y')
-    mockGetPHError.mockReturnValue('An error')
-    mockGetDaxError.mockReturnValue('Has occurred')
+    mockGetErrors.mockReturnValue({ phError: 'An error', daxError: 'Has occurred' })
 
     enrichedEvent = JSON.parse(JSON.stringify(require('../../../mocks/events/enriched')))
     events = [{ correlationId: CORRELATION_ID, events: [enrichedEvent] }]
