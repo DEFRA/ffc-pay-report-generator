@@ -13,6 +13,7 @@ const { getInvoiceNumber } = require('./get-invoice-number')
 const { AR_REPORT } = require('../../constants/report-types')
 
 const getReportLines = async (events, type) => {
+  console.log(events)
   const reportLinePromises = events.map(async (event) => {
     const { phError, daxError } = await getErrors(event.events, event.correlationId)
     const reportLine = {

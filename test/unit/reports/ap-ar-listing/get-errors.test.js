@@ -1,5 +1,4 @@
 jest.mock('../../../../app/storage')
-const { odata: mockOdata } = require('../../../../app/storage')
 
 jest.mock('../../../../app/reports/ap-ar-listing/get-warnings')
 const { getWarnings: mockGetWarnings } = require('../../../../app/reports/ap-ar-listing/get-warnings')
@@ -17,7 +16,7 @@ const acknowledgedEvent = require('../../../mocks/events/acknowledged')
 const { CORRELATION_ID } = require('../../../mocks/values/correlation-id')
 const warning = require('../../../mocks/events/warning')
 const { FRN } = require('../../../mocks/values/frn')
-const { DAX_REJECTED, BANK_MISSING } = require('../../../../app/constants/dax-warnings')
+const { PAYMENT_DAX_REJECTED, PAYMENT_INVALID_BANK } = require('../../../../app/constants/warnings')
 const { FILENAME } = require('../../../mocks/values/filename')
 
 let events
@@ -73,30 +72,18 @@ describe('get errors', () => {
   test('should call getWarning with filter if acknowledgedEvent', async () => {
     events = [acknowledgedEvent]
     await getErrors(events, CORRELATION_ID)
-    expect(mockGetWarnings).toHaveBeenCalledWith(mockOdata`type in (${DAX_REJECTED}, ${BANK_MISSING})`)
+    expect(mockGetWarnings).toHaveBeenCalledWith(events, acknowledgedEvent)
   })
 
-  test('should call getWarning with no filter if no acknowledgedEvent', async () => {
+  test('should call getWarning with undefined ackEvent if no acknowledgedEvent', async () => {
     await getErrors(events, CORRELATION_ID)
-    expect(mockGetWarnings).toHaveBeenCalledWith()
+    expect(mockGetWarnings).toHaveBeenCalledWith(events, undefined)
   })
 
   test('should not call getWarning if settled event', async () => {
     events = [settledEvent]
     await getErrors(events, CORRELATION_ID)
     expect(mockGetWarnings).not.toHaveBeenCalled()
-  })
-
-  test('should provide null phError if no warnings', async () => {
-    mockGetWarnings.mockReturnValue(null)
-    const value = await getErrors(events, CORRELATION_ID)
-    expect(value.phError).toBe(undefined)
-  })
-
-  test('should provide null daxError if no warnings', async () => {
-    mockGetWarnings.mockReturnValue(null)
-    const value = await getErrors(events, CORRELATION_ID)
-    expect(value.daxError).toBe(undefined)
   })
 
   test('should provide null phError if warnings is empty array', async () => {
@@ -111,67 +98,67 @@ describe('get errors', () => {
     expect(value.daxError).toBe(undefined)
   })
 
-  test('should provide undefined phError if warnings contains DAX_REJECTED type error with right correlationId', async () => {
-    mockGetWarnings.mockReturnValue([{ type: DAX_REJECTED, data: { correlationId: CORRELATION_ID, message: 'An error' } }])
+  test('should provide undefined phError if warnings contains PAYMENT_DAX_REJECTED type error with right correlationId', async () => {
+    mockGetWarnings.mockReturnValue([{ type: PAYMENT_DAX_REJECTED, data: { correlationId: CORRELATION_ID, message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.phError).toBe(undefined)
   })
 
-  test('should provide daxError if warnings contains DAX_REJECTED type error with right correlationId', async () => {
-    mockGetWarnings.mockReturnValue([{ type: DAX_REJECTED, data: { correlationId: CORRELATION_ID, message: 'An error' } }])
+  test('should provide daxError if warnings contains PAYMENT_DAX_REJECTED type error with right correlationId', async () => {
+    mockGetWarnings.mockReturnValue([{ type: PAYMENT_DAX_REJECTED, data: { correlationId: CORRELATION_ID, message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.daxError).toBe('An error')
   })
 
-  test('should provide undefined phError if warnings contains DAX_REJECTED type error with right frn', async () => {
-    mockGetWarnings.mockReturnValue([{ type: DAX_REJECTED, data: { frn: FRN, message: 'An error' } }])
+  test('should provide undefined phError if warnings contains PAYMENT_DAX_REJECTED type error with right frn', async () => {
+    mockGetWarnings.mockReturnValue([{ type: PAYMENT_DAX_REJECTED, data: { frn: FRN, message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.phError).toBe(undefined)
   })
 
-  test('should provide daxError if warnings contains DAX_REJECTED type error with right frn', async () => {
-    mockGetWarnings.mockReturnValue([{ type: DAX_REJECTED, data: { frn: FRN, message: 'An error' } }])
+  test('should provide daxError if warnings contains PAYMENT_DAX_REJECTED type error with right frn', async () => {
+    mockGetWarnings.mockReturnValue([{ type: PAYMENT_DAX_REJECTED, data: { frn: FRN, message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.daxError).toBe('An error')
   })
 
-  test('should provide undefined daxError if warnings contains DAX_REJECTED type error with no frn or correlationId match', async () => {
-    mockGetWarnings.mockReturnValue([{ type: DAX_REJECTED, data: { message: 'An error' } }])
+  test('should provide undefined daxError if warnings contains PAYMENT_DAX_REJECTED type error with no frn or correlationId match', async () => {
+    mockGetWarnings.mockReturnValue([{ type: PAYMENT_DAX_REJECTED, data: { message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.daxError).toBe(undefined)
   })
 
-  test('should provide undefined phError if warnings contains BANK_MISSING type error with right correlationId', async () => {
-    mockGetWarnings.mockReturnValue([{ type: BANK_MISSING, data: { correlationId: CORRELATION_ID, message: 'An error' } }])
+  test('should provide undefined phError if warnings contains PAYMENT_INVALID_BANK type error with right correlationId', async () => {
+    mockGetWarnings.mockReturnValue([{ type: PAYMENT_INVALID_BANK, data: { correlationId: CORRELATION_ID, message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.phError).toBe(undefined)
   })
 
-  test('should provide daxError if warnings contains BANK_MISSING type error with right correlationId', async () => {
-    mockGetWarnings.mockReturnValue([{ type: BANK_MISSING, data: { correlationId: CORRELATION_ID, message: 'An error' } }])
+  test('should provide daxError if warnings contains PAYMENT_INVALID_BANK type error with right correlationId', async () => {
+    mockGetWarnings.mockReturnValue([{ type: PAYMENT_INVALID_BANK, data: { correlationId: CORRELATION_ID, message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.daxError).toBe('An error')
   })
 
-  test('should provide undefined phError if warnings contains BANK_MISSING type error with right frn', async () => {
-    mockGetWarnings.mockReturnValue([{ type: BANK_MISSING, data: { frn: FRN, message: 'An error' } }])
+  test('should provide undefined phError if warnings contains PAYMENT_INVALID_BANK type error with right frn', async () => {
+    mockGetWarnings.mockReturnValue([{ type: PAYMENT_INVALID_BANK, data: { frn: FRN, message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.phError).toBe(undefined)
   })
 
-  test('should provide daxError if warnings contains BANK_MISSING type error with right frn', async () => {
-    mockGetWarnings.mockReturnValue([{ type: BANK_MISSING, data: { frn: FRN, message: 'An error' } }])
+  test('should provide daxError if warnings contains PAYMENT_INVALID_BANK type error with right frn', async () => {
+    mockGetWarnings.mockReturnValue([{ type: PAYMENT_INVALID_BANK, data: { frn: FRN, message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.daxError).toBe('An error')
   })
 
-  test('should provide undefined daxError if warnings contains BANK_MISSING type error with no correlationId or frn match', async () => {
-    mockGetWarnings.mockReturnValue([{ type: BANK_MISSING, data: { message: 'An error' } }])
+  test('should provide undefined daxError if warnings contains PAYMENT_INVALID_BANK type error with no correlationId or frn match', async () => {
+    mockGetWarnings.mockReturnValue([{ type: PAYMENT_INVALID_BANK, data: { message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.daxError).toBe(undefined)
   })
 
-  test('should provide phError if warnings contains neither BANK_MISSING nor DAX_REJECTED type error with right correlationId', async () => {
+  test('should provide phError if warnings contains neither PAYMENT_INVALID_BANK nor PAYMENT_DAX_REJECTED type error with right correlationId', async () => {
     mockGetWarnings.mockReturnValue([{ type: 'other_type', data: { correlationId: CORRELATION_ID, message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.phError).toBe('An error')
@@ -184,19 +171,19 @@ describe('get errors', () => {
     expect(value.phError).toBe(undefined)
   })
 
-  test('should provide undefined daxError if warnings contains neither BANK_MISSING nor DAX_REJECTED type error with right correlationId', async () => {
+  test('should provide undefined daxError if warnings contains neither PAYMENT_INVALID_BANK nor PAYMENT_DAX_REJECTED type error with right correlationId', async () => {
     mockGetWarnings.mockReturnValue([{ type: 'other_type', data: { frn: FRN, message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.daxError).toBe(undefined)
   })
 
-  test('should provide phError if warnings contains neither BANK_MISSING nor DAX_REJECTED type error with right subject', async () => {
+  test('should provide phError if warnings contains neither PAYMENT_INVALID_BANK nor PAYMENT_DAX_REJECTED type error with right subject', async () => {
     mockGetWarnings.mockReturnValue([{ type: 'other_type', subject: FILENAME, data: { message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.phError).toBe('An error')
   })
 
-  test('should provide undefined daxError if warnings contains neither BANK_MISSING nor DAX_REJECTED type error with right subject', async () => {
+  test('should provide undefined daxError if warnings contains neither PAYMENT_INVALID_BANK nor PAYMENT_DAX_REJECTED type error with right subject', async () => {
     mockGetWarnings.mockReturnValue([{ type: 'other_type', subject: FILENAME, data: { message: 'An error' } }])
     const value = await getErrors(events, CORRELATION_ID)
     expect(value.daxError).toBe(undefined)
