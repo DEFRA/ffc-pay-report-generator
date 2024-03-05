@@ -56,12 +56,12 @@ describe('get warnings', () => {
 
   test('should get events with specific filter if acknowledgedEvent, order by time', async () => {
     await getWarnings(events, acknowledgedEvent)
-    expect(mockListEntities).toHaveBeenCalledWith({ queryOptions: { filter: mockOdata`type eq ${PAYMENT_DAX_REJECTED} or type eq ${PAYMENT_INVALID_BANK}`, orderby: mockOdata`time desc` } })
+    expect(mockListEntities).toHaveBeenCalledWith({ queryOptions: { filter: mockOdata`type eq ${PAYMENT_DAX_REJECTED} or type eq ${PAYMENT_INVALID_BANK}`, orderby: mockOdata`time asc` } })
   })
 
   test('should get events with specific filter if no acknowledgedEvent, order by time', async () => {
     await getWarnings(events, undefined)
-    expect(mockListEntities).toHaveBeenCalledWith({ queryOptions: { filter: mockOdata`type eq ${BATCH_REJECTED} or type eq ${BATCH_QUARANTINED} or type eq ${PAYMENT_REJECTED} or type eq ${PAYMENT_PROCESSING_FAILED} or type eq ${PAYMENT_SETTLEMENT_UNMATCHED} or type eq ${RESPONSE_REJECTED} or type eq ${PAYMENT_REQUEST_BLOCKED} or type eq ${PAYMENT_DAX_UNAVAILABLE} or type eq ${RECEIVER_CONNECTION_FAILED}`, orderby: mockOdata`time desc` } })
+    expect(mockListEntities).toHaveBeenCalledWith({ queryOptions: { filter: mockOdata`type eq ${BATCH_REJECTED} or type eq ${BATCH_QUARANTINED} or type eq ${PAYMENT_REJECTED} or type eq ${PAYMENT_PROCESSING_FAILED} or type eq ${PAYMENT_SETTLEMENT_UNMATCHED} or type eq ${RESPONSE_REJECTED} or type eq ${PAYMENT_REQUEST_BLOCKED} or type eq ${PAYMENT_DAX_UNAVAILABLE} or type eq ${RECEIVER_CONNECTION_FAILED}`, orderby: mockOdata`time asc` } })
   })
 
   test('should return events an array', async () => {
