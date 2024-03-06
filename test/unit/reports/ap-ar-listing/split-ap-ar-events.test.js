@@ -11,6 +11,16 @@ describe('split AP and AR events', () => {
     events = []
   })
 
+  test('should return no AP events or AR events if no events', () => {
+    events = [{
+      correlationId: CORRELATION_ID,
+      events: []
+    }]
+    const { apEvents, arEvents } = splitAPAREvents(events)
+    expect(apEvents).toEqual([])
+    expect(arEvents).toEqual([])
+  })
+
   test('should return only AP events if no AR', () => {
     events = [{
       correlationId: CORRELATION_ID,
