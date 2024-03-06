@@ -1,11 +1,9 @@
-const { createMIReport } = require('./mi/create')
+const { createReportsWithSharedData } = require('./shared/create')
 const { createSuppressedReport } = require('./suppressed/create')
-const { createSummaryReport } = require('./summary/create')
 
 const createReports = async () => {
-  await createMIReport()
+  await createReportsWithSharedData()
   await createSuppressedReport()
-  await createSummaryReport()
 }
 
 module.exports = {

@@ -6,6 +6,7 @@ const { reportsConfig } = require('../../../app/config')
 const { getBlob } = require('../../helpers/get-blob')
 const { createMIReport } = require('../../../app/reports/mi/create')
 const { initialise, getClient } = require('../../../app/storage')
+const groupedEvent = require('../../mocks/events/grouped-event')
 
 let paymentClient
 let event
@@ -25,7 +26,7 @@ beforeEach(async () => {
 
 describe('process event message', () => {
   test('should create MI report', async () => {
-    await createMIReport()
+    await createMIReport([groupedEvent])
     const blob = await getBlob(reportsConfig.miReportName)
     expect(blob).toContain(CORRELATION_ID)
   })
