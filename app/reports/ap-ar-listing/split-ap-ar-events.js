@@ -21,8 +21,10 @@ const splitAPAREvents = (events) => {
       filteredAPEvents.splice(idxA, 1)
     }
 
-    apEvent.events = filteredAPEvents
-    apEvents.push(apEvent)
+    if (filteredAPEvents.length > 0) {
+      apEvent.events = filteredAPEvents
+      apEvents.push(apEvent)
+    }
 
     if (filteredAREvents.length > 0) {
       arEvent.events = filteredAREvents
