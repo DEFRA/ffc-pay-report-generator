@@ -27,6 +27,7 @@ container:
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
   azureStorageAccountName: ffcpay
+  paymentsEndpoint: https://ffc-pay-tracking.ffc-pay
 
 aadPodIdentity: true
 

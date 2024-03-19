@@ -1,13 +1,14 @@
 const { writeFile } = require('../../storage')
 const { reportsConfig } = require('../../config')
-const { splitAPAREvents } = require('./split-ap-ar-events')
 const { getReportLines } = require('./get-report-lines')
 const { convertToCSV } = require('../convert-to-csv')
-const { AR_REPORT, AP_REPORT } = require('../../constants/report-types')
+const { get } = require('../../api')
 
-const createAPARListingReport = async (events) => {
-  const { apEvents, arEvents } = splitAPAREvents(events)
-  const apReportLines = await getReportLines(apEvents, AP_REPORT)
+const createAPARListingReport = async () => {
+  const { payload } = await get('/report-data')
+  const payLoadData = payload.reportData
+  const reportLines = getReportLines(payLoadData)
+  const { apReportLines, arReportLines } = sanitizeReports(reportLines)
   if (apReportLines.length) {
     const csv = convertToCSV(apReportLines)
     await writeFile(reportsConfig.apListingReportName, csv)
@@ -15,7 +16,6 @@ const createAPARListingReport = async (events) => {
   } else {
     console.log('AP listing report not created, no data')
   }
-  const arReportLines = await getReportLines(arEvents, AR_REPORT)
   if (arReportLines.length) {
     const csv = convertToCSV(arReportLines)
     await writeFile(reportsConfig.arListingReportName, csv)

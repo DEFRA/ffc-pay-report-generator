@@ -9,7 +9,8 @@ const schema = Joi.object({
   warningTable: Joi.string().default('warnings'),
   batchTable: Joi.string().default('batches'),
   container: Joi.string().default('reports'),
-  createEntities: Joi.bool().default(false)
+  createEntities: Joi.bool().default(false),
+  paymentsEndpoint: Joi.string().uri().required()
 })
 
 const config = {
@@ -21,7 +22,8 @@ const config = {
   warningTable: process.env.AZURE_STORAGE_WARNING_TABLE,
   batchTable: process.env.AZURE_STORAGE_BATCH_TABLE,
   container: process.env.AZURE_STORAGE_CONTAINER,
-  createEntities: process.env.AZURE_STORAGE_CREATE_ENTITIES
+  createEntities: process.env.AZURE_STORAGE_CREATE_ENTITIES,
+  paymentsEndpoint: process.env.PAYMENTS_SERVICE_ENDPOINT
 }
 
 const result = schema.validate(config, {
