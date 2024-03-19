@@ -1,7 +1,7 @@
 const moment = require('moment')
 const { DATE_FORMAT } = require('../../constants/date-format')
 
-const getReportLines = async (events) => {
+const getReportLines = (events) => {
   const reportLines = events.map((event) => {
     return {
       Filename: event.batch,
