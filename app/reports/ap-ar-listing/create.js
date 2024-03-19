@@ -3,6 +3,7 @@ const { reportsConfig } = require('../../config')
 const { getReportLines } = require('./get-report-lines')
 const { convertToCSV } = require('../convert-to-csv')
 const { get } = require('../../api')
+const { sanitizeReports } = require('./sanitize-reports')
 
 const createAPARListingReport = async () => {
   const { payload } = await get('/report-data')

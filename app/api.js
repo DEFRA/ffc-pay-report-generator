@@ -1,8 +1,8 @@
-const wreck = require('@hapi/wreck');
-const config = require('./config')
+const wreck = require('@hapi/wreck')
+const { storageConfig } = require('./config')
 
 const get = async (url, token) => {
-  return wreck.get(`${config.paymentsEndpoint}${url}`, getConfiguration(token))
+  return wreck.get(`${storageConfig.paymentsEndpoint}${url}`, getConfiguration(token))
 }
 
 const getConfiguration = (token) => {
