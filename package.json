@@ -16,7 +16,8 @@
   "author": "Defra",
   "contributors": [
     "John Watson john.watson1@defra.gov.uk",
-    "Sam Plackett samuel.plackett@eviden.com"
+    "Sam Plackett samuel.plackett@eviden.com",
+    "Amirs Ishmuhametovs amirs.ishmuhametovs@defra.gov.uk"
   ],
   "license": "OGL-UK-3.0",
   "dependencies": {
