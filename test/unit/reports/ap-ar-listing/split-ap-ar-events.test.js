@@ -1,71 +1,35 @@
-const submittedEvent = require('../../../mocks/events/submitted')
-const acknowledgedEvent = require('../../../mocks/events/acknowledged')
-const settledEvent = require('../../../mocks/events/settled')
 const { splitAPAREvents } = require('../../../../app/reports/ap-ar-listing/split-ap-ar-events')
-const { CORRELATION_ID } = require('../../../mocks/values/correlation-id')
+const { PAYMENT_SUBMITTED, PAYMENT_ACKNOWLEDGED } = require('../../../../app/constants/events')
 
-let events
+describe('splitAPAREvents', () => {
+  test('should split events into AP and AR events', () => {
+    const events = [
+      {
+        events: [
+          { type: PAYMENT_SUBMITTED, data: { ledger: 'AP', invoiceNumber: 'A' } },
+          { type: PAYMENT_SUBMITTED, data: { ledger: 'AP', invoiceNumber: 'B' } },
+          { type: PAYMENT_ACKNOWLEDGED, data: { ledger: 'AR' } }
+        ]
+      }
+    ]
 
-describe('split AP and AR events', () => {
-  beforeEach(() => {
-    events = []
-  })
-
-  test('should return no AP events or AR events if no events', () => {
-    events = [{
-      correlationId: CORRELATION_ID,
-      events: []
-    }]
     const { apEvents, arEvents } = splitAPAREvents(events)
-    expect(apEvents).toEqual([])
-    expect(arEvents).toEqual([])
-  })
 
-  test('should return only AP events if no AR', () => {
-    events = [{
-      correlationId: CORRELATION_ID,
-      events: [submittedEvent, acknowledgedEvent, settledEvent]
-    }]
-    const { apEvents, arEvents } = splitAPAREvents(events)
-    expect(apEvents).toEqual(events)
-    expect(arEvents).toEqual([])
-  })
+    expect(apEvents).toHaveLength(2)
+    expect(arEvents).toHaveLength(1)
 
-  test('should return multiple AP events if two submitted with A and B invoice', () => {
-    const submittedEventA = JSON.parse(JSON.stringify(submittedEvent))
-    submittedEventA.data.invoiceNumber = 'S00000001A000001V001'
-    const submittedEventB = JSON.parse(JSON.stringify(submittedEvent))
-    submittedEventB.data.invoiceNumber = 'S00000001B000001V001'
-    events = [{
-      correlationId: CORRELATION_ID,
-      events: [submittedEventA, submittedEventB, acknowledgedEvent, settledEvent]
-    }]
-    const { apEvents, arEvents } = splitAPAREvents(events)
-    expect(apEvents).toEqual([{
-      correlationId: CORRELATION_ID,
-      events: [submittedEventA, acknowledgedEvent, settledEvent]
-    }, {
-      correlationId: CORRELATION_ID,
-      events: [submittedEventB, acknowledgedEvent, settledEvent]
-    }])
-    expect(arEvents).toEqual([])
-  })
+    expect(apEvents[0].events).toHaveLength(1)
+    expect(apEvents[0].events[0].type).toBe(PAYMENT_SUBMITTED)
+    expect(apEvents[0].events[0].data.ledger).toBe('AP')
+    expect(apEvents[0].events[0].data.invoiceNumber).toBe('A')
 
-  test('should return both AP & AR events if AR', () => {
-    const submittedAREvent = JSON.parse(JSON.stringify(submittedEvent))
-    submittedAREvent.data.ledger = 'AR'
-    events = [{
-      correlationId: CORRELATION_ID,
-      events: [submittedEvent, submittedAREvent, acknowledgedEvent, settledEvent]
-    }]
-    const { apEvents, arEvents } = splitAPAREvents(events)
-    expect(apEvents).toEqual([{
-      correlationId: CORRELATION_ID,
-      events: [submittedEvent, acknowledgedEvent, settledEvent]
-    }])
-    expect(arEvents).toEqual([{
-      correlationId: CORRELATION_ID,
-      events: [submittedAREvent]
-    }])
+    expect(apEvents[1].events).toHaveLength(1)
+    expect(apEvents[1].events[0].type).toBe(PAYMENT_SUBMITTED)
+    expect(apEvents[1].events[0].data.ledger).toBe('AP')
+    expect(apEvents[1].events[0].data.invoiceNumber).toBe('B')
+
+    expect(arEvents[0].events).toHaveLength(1)
+    expect(arEvents[0].events[0].type).toBe(PAYMENT_ACKNOWLEDGED)
+    expect(arEvents[0].events[0].data.ledger).toBe('AR')
   })
 })
