@@ -9,9 +9,9 @@ const createReportsWithSharedData = async () => {
   const events = await getEvents()
   const groupedEvents = groupEventsByCorrelationId(events)
   const orderedEvents = orderGroupedEvents(groupedEvents)
-  createMIReport(orderedEvents)
-  createAPARListingReport(orderedEvents)
-  createSummaryReport(orderedEvents)
+  await createMIReport(orderedEvents)
+  await createAPARListingReport(orderedEvents)
+  await createSummaryReport(orderedEvents)
 }
 
 module.exports = {
