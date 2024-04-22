@@ -35,7 +35,7 @@ azureIdentity:
   resourceID: not-a-real-resourceID
 
 cronJob:
-  schedule: "0 * * * *"
+  schedule: "0 */2 * * *"
   concurrencyPolicy: Forbid
   restartPolicy: Never
   successfulJobsHistoryLimit: 1
