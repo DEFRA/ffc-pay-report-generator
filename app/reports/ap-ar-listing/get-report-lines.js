@@ -15,8 +15,6 @@ const { AR_REPORT } = require('../../constants/report-types')
 const getReportLines = async (events, type) => {
   const reportLines = []
 
-  console.log('Retrieving report lines')
-
   for (const event of events) {
     const { phError, daxError } = await getErrors(event.events, event.correlationId)
     const reportLine = {
@@ -40,7 +38,6 @@ const getReportLines = async (events, type) => {
     reportLines.push(reportLine)
   }
 
-  console.log('Retrieved report lines')
   return reportLines
 }
 
