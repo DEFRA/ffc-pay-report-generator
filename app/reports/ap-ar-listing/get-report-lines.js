@@ -13,7 +13,11 @@ const { getInvoiceNumber } = require('./get-invoice-number')
 const { AR_REPORT } = require('../../constants/report-types')
 
 const getReportLines = async (events, type) => {
-  const reportLinePromises = events.map(async (event) => {
+  const reportLines = []
+
+  console.log('Retrieving report lines')
+
+  for (const event of events) {
     const { phError, daxError } = await getErrors(event.events, event.correlationId)
     const reportLine = {
       Filename: getFilename(event.events) ?? UNKNOWN,
@@ -32,19 +36,12 @@ const getReportLines = async (events, type) => {
     if (type === AR_REPORT) {
       delete reportLine['D365 Invoice Payment']
     }
-    return reportLine
-  })
 
-  // Wait for all report line promises to resolve
-  try {
-    const reportLines = await Promise.all(reportLinePromises)
-    console.log('Successfully created report lines')
-    return reportLines
-  } catch (e) {
-    console.log('Failed to create report lines')
-    console.log(e)
-    return []
+    reportLines.push(reportLine)
   }
+
+  console.log('Retrieved report lines')
+  return reportLines
 }
 
 module.exports = {
