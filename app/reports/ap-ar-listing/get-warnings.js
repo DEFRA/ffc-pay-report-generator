@@ -11,7 +11,9 @@ const getWarnings = async (events, acknowledgedEvent) => {
     filter = odata`type eq ${BATCH_REJECTED} or type eq ${BATCH_QUARANTINED} or type eq ${PAYMENT_REJECTED} or type eq ${PAYMENT_PROCESSING_FAILED} or type eq ${PAYMENT_SETTLEMENT_UNMATCHED} or type eq ${RESPONSE_REJECTED} or type eq ${PAYMENT_REQUEST_BLOCKED} or type eq ${PAYMENT_DAX_UNAVAILABLE} or type eq ${RECEIVER_CONNECTION_FAILED}`
   }
   const client = getClient(WARNING_EVENT)
+  console.log('Ordering events')
   const eventResults = client.listEntities({ queryOptions: { filter, orderby: odata`time asc` } })
+  console.log('Events ordered')
   for await (const event of eventResults) {
     event.data = JSON.parse(event.data)
     warnings.push(event)
