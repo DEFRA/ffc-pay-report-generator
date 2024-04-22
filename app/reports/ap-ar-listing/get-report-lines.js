@@ -13,7 +13,6 @@ const { getInvoiceNumber } = require('./get-invoice-number')
 const { AR_REPORT } = require('../../constants/report-types')
 
 const getReportLines = async (events, type) => {
-  console.log('Getting suppression report lines')
   const reportLinePromises = events.map(async (event) => {
     const { phError, daxError } = await getErrors(event.events, event.correlationId)
     const reportLine = {
@@ -37,8 +36,15 @@ const getReportLines = async (events, type) => {
   })
 
   // Wait for all report line promises to resolve
-  const reportLines = await Promise.all(reportLinePromises)
-  return reportLines
+  try {
+    const reportLines = await Promise.all(reportLinePromises)
+    console.log('Successfully created report lines')
+    return reportLines
+  } catch (e) {
+    console.log('Failed to create report lines')
+    console.log(e)
+    return []
+  }
 }
 
 module.exports = {
