@@ -10,12 +10,6 @@ const { orderGroupedEvents: mockOrderGroupedEvents } = require('../../../../app/
 jest.mock('../../../../app/reports/mi/create')
 const { createMIReport } = require('../../../../app/reports/mi/create')
 
-jest.mock('../../../../app/reports/summary/create')
-const { createSummaryReport } = require('../../../../app/reports/summary/create')
-
-jest.mock('../../../../app/reports/ap-ar-listing/create')
-const { createAPARListingReport } = require('../../../../app/reports/ap-ar-listing/create')
-
 const { createReportsWithSharedData } = require('../../../../app/reports/shared/create')
 
 const event = require('../../../mocks/events/event')
@@ -63,25 +57,5 @@ describe('create reports with shared events', () => {
   test('should call createMIReport once', async () => {
     await createReportsWithSharedData()
     expect(createMIReport).toHaveBeenCalledTimes(1)
-  })
-
-  test('should call createAPARListingReport', async () => {
-    await createReportsWithSharedData()
-    expect(createAPARListingReport).toHaveBeenCalledWith([groupedEvent])
-  })
-
-  test('should call createAPARListingReport once', async () => {
-    await createReportsWithSharedData()
-    expect(createAPARListingReport).toHaveBeenCalledTimes(1)
-  })
-
-  test('should call createSummaryReport', async () => {
-    await createReportsWithSharedData()
-    expect(createSummaryReport).toHaveBeenCalledWith([groupedEvent])
-  })
-
-  test('should call createSummaryReport once', async () => {
-    await createReportsWithSharedData()
-    expect(createSummaryReport).toHaveBeenCalledTimes(1)
   })
 })
