@@ -31,7 +31,7 @@ These configuration values should be set in the [docker-compose.yaml](docker-com
 Docker Compose can be used to build the container image.
 
 ```
-docker-compose build
+docker compose build
 ```
 
 The service will start with application and test code volume mappings so no need to rebuild the container unless a change to an npm package is made.
