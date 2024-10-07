@@ -16,17 +16,31 @@ const event = require('../../../mocks/events/event')
 const groupedEvent = require('../../../mocks/events/grouped-event')
 
 describe('create reports with shared events', () => {
+  let consoleLogSpy
+
   beforeEach(() => {
     jest.clearAllMocks()
+    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
 
     mockGetEvents.mockResolvedValue([event])
     mockGroupEventsByCorrelationId.mockReturnValue([groupedEvent])
     mockOrderGroupedEvents.mockReturnValue([groupedEvent])
   })
 
+  afterEach(() => {
+    consoleLogSpy.mockRestore()
+  })
+
   test('should get all payment events', async () => {
     await createReportsWithSharedData()
     expect(mockGetEvents).toHaveBeenCalledTimes(1)
+  })
+
+  test('should log the number of events obtained', async () => {
+    await createReportsWithSharedData()
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      'Obtained events for shared data reports - 1 report entries'
+    )
   })
 
   test('should group events by correlation id', async () => {

@@ -29,8 +29,15 @@ const { PAYMENT_EVENT, BATCH_EVENT, HOLD_EVENT, WARNING_EVENT } = require('../..
 const { initialise, getClient } = require('../../app/storage')
 
 describe('storage', () => {
+  let consoleSpy
+
   beforeEach(() => {
     jest.clearAllMocks()
+    consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+  })
+
+  afterEach(() => {
+    consoleSpy.mockRestore()
   })
 
   test('should create payment table when initialising', async () => {
@@ -74,19 +81,19 @@ describe('storage', () => {
     expect(client).toBeDefined()
   })
 
-  test('getClient should return batch client if payment event', async () => {
+  test('getClient should return batch client if batch event', async () => {
     await initialise()
     const client = getClient(BATCH_EVENT)
     expect(client).toBeDefined()
   })
 
-  test('getClient should return hold client if payment event', async () => {
+  test('getClient should return hold client if hold event', async () => {
     await initialise()
     const client = getClient(HOLD_EVENT)
     expect(client).toBeDefined()
   })
 
-  test('getClient should return warning client if payment event', async () => {
+  test('getClient should return warning client if warning event', async () => {
     await initialise()
     const client = getClient(WARNING_EVENT)
     expect(client).toBeDefined()
@@ -95,5 +102,10 @@ describe('storage', () => {
   test('getClient should throw error for unknown event', async () => {
     await initialise()
     expect(() => getClient('unknown')).toThrow()
+  })
+
+  test('should log "Storage ready" once storage is initialised', async () => {
+    await initialise()
+    expect(consoleSpy).toHaveBeenCalledWith('Storage ready')
   })
 })
