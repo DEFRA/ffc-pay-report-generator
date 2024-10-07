@@ -6,6 +6,7 @@ const { convertToCSV } = require('../convert-to-csv')
 
 const createSuppressedReport = async () => {
   const events = await getEvents()
+  console.log(`Obtained events for suppressed reports - ${events.length} report entries`)
   const reportLines = getReportLines(events)
   if (reportLines.length) {
     const csv = convertToCSV(reportLines)

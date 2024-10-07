@@ -5,6 +5,7 @@ const { createMIReport } = require('../mi')
 
 const createReportsWithSharedData = async () => {
   const events = await getEvents()
+  console.log(`Obtained events for shared data reports - ${events.length} report entries`)
   const groupedEvents = groupEventsByCorrelationId(events)
   const orderedEvents = orderGroupedEvents(groupedEvents)
   await createMIReport(orderedEvents)
