@@ -23,7 +23,7 @@
     "@azure/data-tables": "13.2.1",
     "@azure/identity": "^4.4.1",
     "@azure/storage-blob": "12.13.0",
-    "applicationinsights": "3.3.0",
+    "applicationinsights": "2.9.6",
     "joi": "17.7.1",
     "log-timestamp": "0.3.0",
     "moment": "2.29.4",
