@@ -2,8 +2,12 @@ const { createReportsWithSharedData } = require('./shared/create')
 const { createSuppressedReport } = require('./suppressed/create')
 
 const createReports = async () => {
-  await createReportsWithSharedData()
-  await createSuppressedReport()
+  try {
+    await createSuppressedReport()
+    await createReportsWithSharedData()
+  } catch (error) {
+    console.error(`An error occurred while creating reports: ${error.message}`)
+  }
 }
 
 module.exports = {

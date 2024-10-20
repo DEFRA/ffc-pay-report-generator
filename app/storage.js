@@ -36,8 +36,8 @@ const initialise = async () => {
     await batchClient.createTable(storageConfig.batchTable)
     console.log('Making sure blob containers exist')
     await container.createIfNotExists()
-    console.log('Storage ready')
   }
+  console.log('Storage ready')
 }
 
 const getClient = (eventType) => {

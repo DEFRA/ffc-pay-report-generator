@@ -6,18 +6,36 @@ const { createSuppressedReport } = require('../../../app/reports/suppressed/crea
 
 const { createReports } = require('../../../app/reports/index')
 
-describe('createReports', () => {
+describe('create reports', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  test('should call createReportsWithSharedData exactly once', async () => {
+  test('should call createSuppressedReport and createReportsWithSharedData exactly once', async () => {
     await createReports()
+    expect(createSuppressedReport).toHaveBeenCalledTimes(1)
     expect(createReportsWithSharedData).toHaveBeenCalledTimes(1)
   })
 
-  test('should call createSuppressedReport exactly once', async () => {
+  test('should handle errors thrown by createSuppressedReport', async () => {
+    createSuppressedReport.mockRejectedValueOnce(new Error('Suppressed report error'))
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
     await createReports()
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('An error occurred while creating reports: Suppressed report error'))
+    expect(createReportsWithSharedData).not.toHaveBeenCalled()
+    consoleErrorSpy.mockRestore()
+  })
+
+  test('should handle errors thrown by createReportsWithSharedData', async () => {
+    createReportsWithSharedData.mockRejectedValueOnce(new Error('Shared data report error'))
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+
+    await createReports()
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('An error occurred while creating reports: Shared data report error'))
     expect(createSuppressedReport).toHaveBeenCalledTimes(1)
+    consoleErrorSpy.mockRestore()
   })
 })
