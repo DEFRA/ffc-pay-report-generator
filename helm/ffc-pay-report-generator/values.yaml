@@ -30,6 +30,10 @@ container:
 
 workloadIdentity: true
 
+azureIdentity:
+  clientID: not-a-real-clientID
+  resourceID: not-a-real-resourceID
+
 cronJob:
   schedule: "0 */2 * * *"
   concurrencyPolicy: Forbid
