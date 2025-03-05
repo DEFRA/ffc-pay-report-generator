@@ -20,13 +20,21 @@ const initialise = async () => {
     batchClient = TableClient.fromConnectionString(storageConfig.connectionString, storageConfig.batchTable, { allowInsecureConnection: true })
     blobServiceClient = BlobServiceClient.fromConnectionString(storageConfig.connectionString)
   } else {
-    console.log('Using DefaultAzureCredential for Table Client')
-    paymentClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.paymentTable, new DefaultAzureCredential())
-    holdClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.holdTable, new DefaultAzureCredential())
-    warningClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.warningTable, new DefaultAzureCredential())
-    batchClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.batchTable, new DefaultAzureCredential())
-    blobServiceClient = new BlobServiceClient(`https://${storageConfig.account}.blob.core.windows.net`, new DefaultAzureCredential())
+    console.log('Using DefaultAzureCredential with managed identity for Table Client')
+    const credential = new DefaultAzureCredential({
+      managedIdentityClientId: storageConfig.managedIdentityClientId
+    })
+
+    paymentClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.paymentTable, credential)
+    holdClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.holdTable, credential)
+    warningClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.warningTable, credential)
+    batchClient = new TableClient(`https://${storageConfig.account}.table.core.windows.net`, storageConfig.batchTable, credential)
+    blobServiceClient = new BlobServiceClient(
+      `https://${storageConfig.account}.blob.core.windows.net`,
+      credential
+    )
   }
+
   container = blobServiceClient.getContainerClient(storageConfig.container)
   if (storageConfig.createEntities) {
     console.log('Making sure tables exist')

@@ -1,11 +1,3 @@
 {{- include "ffc-helm-library.cron-job" (list . "ffc-pay-report-generator.cron-job") -}}
 {{- define "ffc-pay-report-generator.cron-job" -}}
-spec:
-  successfulJobsHistoryLimit: {{ .Values.cronJob.successfulJobsHistoryLimit }}
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-          - {{ include "ffc-helm-library.container" (list . "ffc-pay-report-generator.container") | nindent 12 }}
 {{- end -}}
