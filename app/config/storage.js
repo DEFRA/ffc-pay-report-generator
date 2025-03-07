@@ -11,7 +11,6 @@ const schema = Joi.object({
   container: Joi.string().default('reports'),
   createEntities: Joi.bool().default(false),
   managedIdentityClientId: Joi.string().optional()
-
 })
 
 const config = {
