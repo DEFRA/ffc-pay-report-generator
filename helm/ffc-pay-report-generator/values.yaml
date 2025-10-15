@@ -20,8 +20,8 @@ containerSecret:
 
 container:
   nodeOptions: --max-old-space-size=8192
-  requestMemory: 800Mi
-  requestCpu: 800m
+  requestMemory: 1500Mi
+  requestCpu: 1500m
   limitMemory: 5500Mi
   limitCpu: 4500m
   azureStorageConnectionString: dummy
