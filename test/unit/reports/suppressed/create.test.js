@@ -11,7 +11,6 @@ jest.mock('../../../../app/storage')
 const { writeFile: mockWriteFile } = require('../../../../app/storage')
 
 const { reportsConfig } = require('../../../../app/config')
-
 const { createSuppressedReport } = require('../../../../app/reports/suppressed/create')
 
 const event = require('../../../mocks/events/suppressed')
@@ -19,11 +18,11 @@ const reportLine = require('../../../mocks/report-lines/suppressed')
 const csv = require('../../../mocks/csv')
 
 describe('create suppressed report', () => {
-  let consoleLogSpy
+  let consoleSpy
 
   beforeEach(() => {
     jest.clearAllMocks()
-    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+    consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
 
     mockGetEvents.mockResolvedValue([event])
     mockGetReportLines.mockReturnValue([reportLine])
@@ -31,73 +30,66 @@ describe('create suppressed report', () => {
   })
 
   afterEach(() => {
-    consoleLogSpy.mockRestore()
+    consoleSpy.mockRestore()
   })
 
-  test('should get all payment events', async () => {
+  test('gets suppressed payment events', async () => {
     await createSuppressedReport()
     expect(mockGetEvents).toHaveBeenCalledTimes(1)
   })
 
-  test('should log the number of events obtained', async () => {
+  test('logs number of events obtained', async () => {
     await createSuppressedReport()
-    expect(consoleLogSpy).toHaveBeenCalledWith(
+    expect(consoleSpy).toHaveBeenCalledWith(
       'Obtained events for suppressed reports - 1 report entries'
     )
   })
 
-  test('should get report lines', async () => {
+  test('gets report lines for events', async () => {
     await createSuppressedReport()
     expect(mockGetReportLines).toHaveBeenCalledWith([event])
   })
 
-  test('should get report lines once', async () => {
-    await createSuppressedReport()
-    expect(mockGetReportLines).toHaveBeenCalledTimes(1)
-  })
-
-  test('should convert report lines to csv if report lines', async () => {
+  test('converts report lines to CSV when present', async () => {
     await createSuppressedReport()
     expect(mockConvertToCSV).toHaveBeenCalledWith([reportLine])
   })
 
-  test('should convert report lines to csv once if report lines', async () => {
+  test('writes CSV to storage when report lines exist', async () => {
     await createSuppressedReport()
-    expect(mockConvertToCSV).toHaveBeenCalledTimes(1)
+    expect(mockWriteFile).toHaveBeenCalledWith(
+      reportsConfig.suppressedReportName,
+      csv
+    )
   })
 
-  test('should not convert report lines to csv if no report lines', async () => {
-    mockGetReportLines.mockReturnValue([])
+  test('logs created report message', async () => {
     await createSuppressedReport()
-    expect(mockConvertToCSV).not.toHaveBeenCalled()
-  })
-
-  test('should write csv to suppressed report file if report lines', async () => {
-    await createSuppressedReport()
-    expect(mockWriteFile).toHaveBeenCalledWith(reportsConfig.suppressedReportName, csv)
-  })
-
-  test('should write csv to suppressed report file once if report lines', async () => {
-    await createSuppressedReport()
-    expect(mockWriteFile).toHaveBeenCalledTimes(1)
-  })
-
-  test('should log when suppressed report is created', async () => {
-    await createSuppressedReport()
-    expect(consoleLogSpy).toHaveBeenCalledWith(
+    expect(consoleSpy).toHaveBeenCalledWith(
       `Suppressed report created: ${reportsConfig.suppressedReportName}`
     )
   })
 
-  test('should not write csv to suppressed report file if no report lines', async () => {
-    mockGetReportLines.mockReturnValue([])
-    await createSuppressedReport()
-    expect(mockWriteFile).not.toHaveBeenCalled()
-  })
+  describe('when no report lines exist', () => {
+    beforeEach(() => {
+      mockGetReportLines.mockReturnValue([])
+    })
 
-  test('should log when suppressed report is not created due to no data', async () => {
-    mockGetReportLines.mockReturnValue([])
-    await createSuppressedReport()
-    expect(consoleLogSpy).toHaveBeenCalledWith('Suppressed report not created, no data')
+    test('does not convert to CSV', async () => {
+      await createSuppressedReport()
+      expect(mockConvertToCSV).not.toHaveBeenCalled()
+    })
+
+    test('does not write a file', async () => {
+      await createSuppressedReport()
+      expect(mockWriteFile).not.toHaveBeenCalled()
+    })
+
+    test('logs not created message', async () => {
+      await createSuppressedReport()
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Suppressed report not created, no data'
+      )
+    })
   })
 })

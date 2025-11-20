@@ -19,7 +19,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   paymentClient.deleteTable()
   paymentClient.createTable()
-  event = JSON.parse(JSON.stringify(require('../../mocks/event-store-row')))
+  event = structuredClone(require('../../mocks/event-store-row'))
 
   await paymentClient.createEntity(event)
 })
