@@ -17,48 +17,29 @@ const csv = require('../../../mocks/csv')
 describe('create mi report', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-
     mockGetReportLines.mockReturnValue([reportLine])
     mockConvertToCSV.mockReturnValue(csv)
   })
 
-  test('should get report lines', async () => {
+  test.each([
+    ['calls getReportLines', () => expect(mockGetReportLines).toHaveBeenCalledWith([groupedEvent])],
+    ['calls getReportLines once', () => expect(mockGetReportLines).toHaveBeenCalledTimes(1)],
+    ['converts lines to csv', () => expect(mockConvertToCSV).toHaveBeenCalledWith([reportLine])],
+    ['converts lines to csv once', () => expect(mockConvertToCSV).toHaveBeenCalledTimes(1)],
+    ['writes csv file', () => expect(mockWriteFile).toHaveBeenCalledWith(reportsConfig.miReportName, csv)],
+    ['writes csv file once', () => expect(mockWriteFile).toHaveBeenCalledTimes(1)]
+  ])('%s', async (name, assertion) => {
     await createMIReport([groupedEvent])
-    expect(mockGetReportLines).toHaveBeenCalledWith([groupedEvent])
+    assertion()
   })
 
-  test('should get report lines once', async () => {
-    await createMIReport([groupedEvent])
-    expect(mockGetReportLines).toHaveBeenCalledTimes(1)
-  })
-
-  test('should convert report lines to csv if report lines', async () => {
-    await createMIReport([groupedEvent])
-    expect(mockConvertToCSV).toHaveBeenCalledWith([reportLine])
-  })
-
-  test('should convert report lines to csv once if report lines', async () => {
-    await createMIReport([groupedEvent])
-    expect(mockConvertToCSV).toHaveBeenCalledTimes(1)
-  })
-
-  test('should not convert report lines to csv if no report lines', async () => {
+  test('does not convert to csv when no lines', async () => {
     mockGetReportLines.mockReturnValue([])
     await createMIReport([groupedEvent])
     expect(mockConvertToCSV).not.toHaveBeenCalled()
   })
 
-  test('should write csv to MI report file if report lines', async () => {
-    await createMIReport([groupedEvent])
-    expect(mockWriteFile).toHaveBeenCalledWith(reportsConfig.miReportName, csv)
-  })
-
-  test('should write csv to MI report file once if report lines', async () => {
-    await createMIReport([groupedEvent])
-    expect(mockWriteFile).toHaveBeenCalledTimes(1)
-  })
-
-  test('should not write csv to MI report file if no report lines', async () => {
+  test('does not write file when no lines', async () => {
     mockGetReportLines.mockReturnValue([])
     await createMIReport([groupedEvent])
     expect(mockWriteFile).not.toHaveBeenCalled()

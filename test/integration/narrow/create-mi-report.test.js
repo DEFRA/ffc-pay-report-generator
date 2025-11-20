@@ -20,9 +20,9 @@ let events
 describe('create mi report', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    extractedEvent = JSON.parse(JSON.stringify(require('../../mocks/events/extracted')))
-    enrichedEvent = JSON.parse(JSON.stringify(require('../../mocks/events/enriched')))
-    resetEvent = JSON.parse(JSON.stringify(require('../../mocks/events/reset')))
+    extractedEvent = structuredClone(require('../../mocks/events/extracted'))
+    enrichedEvent = structuredClone(require('../../mocks/events/enriched'))
+    resetEvent = structuredClone(require('../../mocks/events/reset'))
 
     stringifyEventData(extractedEvent)
     stringifyEventData(enrichedEvent)

@@ -16,11 +16,11 @@ const event = require('../../../mocks/events/event')
 const groupedEvent = require('../../../mocks/events/grouped-event')
 
 describe('create reports with shared events', () => {
-  let consoleLogSpy
+  let logSpy
 
   beforeEach(() => {
     jest.clearAllMocks()
-    consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
+    logSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
 
     mockGetEvents.mockResolvedValue([event])
     mockGroupEventsByCorrelationId.mockReturnValue([groupedEvent])
@@ -28,48 +28,24 @@ describe('create reports with shared events', () => {
   })
 
   afterEach(() => {
-    consoleLogSpy.mockRestore()
+    logSpy.mockRestore()
   })
 
-  test('should get all payment events', async () => {
+  test('logs number of events', async () => {
     await createReportsWithSharedData()
-    expect(mockGetEvents).toHaveBeenCalledTimes(1)
-  })
-
-  test('should log the number of events obtained', async () => {
-    await createReportsWithSharedData()
-    expect(consoleLogSpy).toHaveBeenCalledWith(
+    expect(logSpy).toHaveBeenCalledWith(
       'Obtained events for shared data reports - 1 report entries'
     )
   })
 
-  test('should group events by correlation id', async () => {
+  test.each([
+    ['gets payment events', mockGetEvents, [], 1],
+    ['groups events', mockGroupEventsByCorrelationId, [[event]], 1],
+    ['orders grouped events', mockOrderGroupedEvents, [[groupedEvent]], 1],
+    ['creates MI report', createMIReport, [[groupedEvent]], 1]
+  ])('%s', async (name, fn, args, count) => {
     await createReportsWithSharedData()
-    expect(mockGroupEventsByCorrelationId).toHaveBeenCalledWith([event])
-  })
-
-  test('should group events by correlation id once', async () => {
-    await createReportsWithSharedData()
-    expect(mockGroupEventsByCorrelationId).toHaveBeenCalledTimes(1)
-  })
-
-  test('should order grouped events', async () => {
-    await createReportsWithSharedData()
-    expect(mockOrderGroupedEvents).toHaveBeenCalledWith([groupedEvent])
-  })
-
-  test('should order grouped events once', async () => {
-    await createReportsWithSharedData()
-    expect(mockOrderGroupedEvents).toHaveBeenCalledTimes(1)
-  })
-
-  test('should call createMIReport', async () => {
-    await createReportsWithSharedData()
-    expect(createMIReport).toHaveBeenCalledWith([groupedEvent])
-  })
-
-  test('should call createMIReport once', async () => {
-    await createReportsWithSharedData()
-    expect(createMIReport).toHaveBeenCalledTimes(1)
+    expect(fn).toHaveBeenCalledWith(...args)
+    expect(fn).toHaveBeenCalledTimes(count)
   })
 })
