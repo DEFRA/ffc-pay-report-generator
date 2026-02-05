@@ -27,6 +27,7 @@ container:
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
   azureStorageAccountName: ffcpay
+  eventHubEndpoint: http://ffc-pay-event-hub.ffc-pay
 
 workloadIdentity: true
 
