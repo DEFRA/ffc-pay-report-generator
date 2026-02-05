@@ -1,15 +1,23 @@
-const { PAYMENT_EVENT } = require('../../constants/event-types')
-const { PAYMENT_SUPPRESSED } = require('../../constants/events')
-const { getClient, odata } = require('../../storage')
+const wreck = require('@hapi/wreck')
+const { reportsConfig } = require('../../config')
+const { get } = require('../../api')
+const { getDataRequestFile } = require('../../storage')
 
 const getEvents = async () => {
-  const client = getClient(PAYMENT_EVENT)
-  const eventResults = client.listEntities({ queryOptions: { filter: odata`category eq 'frn' and type eq '${PAYMENT_SUPPRESSED}'` } })
+  const url = '/suppressed-report-data'
+  console.log(`${reportsConfig.eventHubEndpoint}${url}`)
+  const { payload } = await get(`${reportsConfig.eventHubEndpoint}${url}`)
+  const file = await getDataRequestFile(payload.file)
   const events = []
-  for await (const event of eventResults) {
-    event.data = JSON.parse(event.data)
-    events.push(event)
+  if (payload && Array.isArray(payload)) {
+    for (const event of payload) {
+      if (typeof event.data === 'string') {
+        event.data = JSON.parse(file)
+      }
+      events.push(event)
+    }
   }
+  
   return events
 }
 

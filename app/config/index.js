@@ -3,5 +3,5 @@ const reportsConfig = require('./reports')
 
 module.exports = {
   storageConfig,
-  reportsConfig
+  reportsConfig,
 }
