@@ -90,7 +90,7 @@ describe('getReportLines', () => {
     })
 
     test('handles missing data gracefully', () => {
-      const event = { partitionKey: 'AAA', time: 1704067200000 }
+      const event = { PartitionKey: 'AAA', time: 1704067200000 }
       const result = getReportLines([event])
       expect(result[0]).toMatchObject({
         frn: 'AAA',
