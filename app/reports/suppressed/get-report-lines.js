@@ -4,19 +4,20 @@ const { convertToPounds } = require('../../currency-convert')
 
 const getReportLines = (events) => {
   return events
-    .sort((x, y) => x.time - y.time)
-    .map(event => ({
-      frn: event.partitionKey,
-      agreementNumber: event.data.agreementNumber,
-      marketingYear: event.data.marketingYear,
-      paymentRequestNumber: event.data.paymentRequestNumber,
-      deltaValue: convertToPounds(event.data.deltaValue),
-      creditAP: convertToPounds(event.data.creditAP),
-      suppressedAR: convertToPounds(event.data.suppressedAR),
-      suppressed: moment(event.time).format(DATE_FORMAT)
-    }))
+    .sort((x, y) => (x.time || 0) - (y.time || 0))
+    .map(event => {
+      const data = event.data || {}
+      return {
+        frn: event.partitionKey,
+        agreementNumber: data.agreementNumber,
+        marketingYear: data.marketingYear,
+        paymentRequestNumber: data.paymentRequestNumber,
+        deltaValue: convertToPounds(data.deltaValue || 0),
+        creditAP: convertToPounds(data.creditAP || 0),
+        suppressedAR: convertToPounds(data.suppressedAR || 0),
+        suppressed: moment(event.time).format(DATE_FORMAT)
+      }
+    })
 }
 
-module.exports = {
-  getReportLines
-}
+module.exports = { getReportLines }

@@ -9,7 +9,7 @@ const schema = Joi.object({
   warningTable: Joi.string().default('warnings'),
   batchTable: Joi.string().default('batches'),
   reportContainer: Joi.string().default('reports'),
-  dataRequestContainer: Joi.string().default('reports'),
+  dataRequestContainer: Joi.string().default('data-requests'),
   createEntities: Joi.bool().default(false),
   managedIdentityClientId: Joi.string().optional()
 })
