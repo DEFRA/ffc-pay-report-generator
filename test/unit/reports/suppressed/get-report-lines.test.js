@@ -10,11 +10,11 @@ describe('getReportLines', () => {
   })
 
   const makeEvent = ({
-    partitionKey = '1234567890',
+    PartitionKey = '1234567890',
     time = 1704067200000,
     data = null
   } = {}) => ({
-    partitionKey,
+    PartitionKey,
     time,
     data: data ?? {
       agreementNumber: 'AGR001',

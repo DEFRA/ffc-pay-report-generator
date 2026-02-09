@@ -8,7 +8,7 @@ const getReportLines = (events) => {
     .map(event => {
       const data = event.data || {}
       return {
-        frn: event.partitionKey,
+        frn: event.PartitionKey,
         agreementNumber: data.agreementNumber,
         marketingYear: data.marketingYear,
         paymentRequestNumber: data.paymentRequestNumber,
