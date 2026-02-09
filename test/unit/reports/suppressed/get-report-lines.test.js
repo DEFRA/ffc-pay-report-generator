@@ -47,9 +47,9 @@ describe('getReportLines', () => {
 
     test('maps multiple events to report lines', () => {
       const events = [
-        makeEvent({ partitionKey: '1111111111' }),
+        makeEvent({ PartitionKey: '1111111111' }),
         makeEvent({
-          partitionKey: '2222222222',
+          PartitionKey: '2222222222',
           data: { deltaValue: 20000, creditAP: 10000, suppressedAR: 6000, agreementNumber: 'AGR002', marketingYear: 2024, paymentRequestNumber: 'PR002' }
         })
       ]
