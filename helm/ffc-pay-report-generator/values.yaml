@@ -24,6 +24,7 @@ container:
   requestCpu: 800m
   limitMemory: 8192Mi
   limitCpu: 6000m
+  port: 3000
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
   azureStorageAccountName: ffcpay
