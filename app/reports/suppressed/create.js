@@ -22,5 +22,5 @@ const createSuppressedReport = async () => {
 }
 
 module.exports = {
-  createSuppressedReport,
+  createSuppressedReport
 }

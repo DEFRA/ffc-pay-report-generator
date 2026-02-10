@@ -13,7 +13,7 @@ describe('getReportLines', () => {
   const makeEvent = ({
     partitionKey = '1234567890',
     time = 1704067200000,
-    data = null,
+    data = null
   } = {}) => ({
     partitionKey,
     time,
@@ -23,8 +23,8 @@ describe('getReportLines', () => {
       paymentRequestNumber: 'PR001',
       deltaValue: 10000,
       creditAP: 5000,
-      suppressedAR: 3000,
-    },
+      suppressedAR: 3000
+    }
   })
 
   describe('basic functionality', () => {
@@ -42,7 +42,7 @@ describe('getReportLines', () => {
         deltaValue: '100.00',
         creditAP: '50.00',
         suppressedAR: '30.00',
-        suppressed: moment(1704067200000).format('DD/MM/YYYY'),
+        suppressed: moment(1704067200000).format('DD/MM/YYYY')
       })
     })
 
@@ -57,9 +57,9 @@ describe('getReportLines', () => {
             suppressedAR: 6000,
             agreementNumber: 'AGR002',
             marketingYear: 2024,
-            paymentRequestNumber: 'PR002',
-          },
-        }),
+            paymentRequestNumber: 'PR002'
+          }
+        })
       ]
       const result = getReportLines(events)
       expect(result.map((r) => r.frn)).toEqual(['1111111111', '2222222222'])
@@ -74,13 +74,13 @@ describe('getReportLines', () => {
         suppressedAR: 99999,
         agreementNumber: 'AGR001',
         marketingYear: 2024,
-        paymentRequestNumber: 'PR001',
+        paymentRequestNumber: 'PR001'
       }
       const result = getReportLines([makeEvent({ data })])
       expect(result[0]).toMatchObject({
         deltaValue: '123.45',
         creditAP: '678.90',
-        suppressedAR: '999.99',
+        suppressedAR: '999.99'
       })
     })
 
@@ -91,13 +91,13 @@ describe('getReportLines', () => {
         suppressedAR: 0,
         agreementNumber: 'AGR001',
         marketingYear: 2024,
-        paymentRequestNumber: 'PR001',
+        paymentRequestNumber: 'PR001'
       }
       const result = getReportLines([makeEvent({ data })])
       expect(result[0]).toMatchObject({
         deltaValue: '0.00',
         creditAP: '0.00',
-        suppressedAR: '0.00',
+        suppressedAR: '0.00'
       })
     })
 
@@ -108,13 +108,13 @@ describe('getReportLines', () => {
         suppressedAR: -3000,
         agreementNumber: 'AGR001',
         marketingYear: 2024,
-        paymentRequestNumber: 'PR001',
+        paymentRequestNumber: 'PR001'
       }
       const result = getReportLines([makeEvent({ data })])
       expect(result[0]).toMatchObject({
         deltaValue: '-100.00',
         creditAP: '-50.00',
-        suppressedAR: '-30.00',
+        suppressedAR: '-30.00'
       })
     })
 
@@ -128,7 +128,7 @@ describe('getReportLines', () => {
         paymentRequestNumber: undefined,
         deltaValue: '0.00',
         creditAP: '0.00',
-        suppressedAR: '0.00',
+        suppressedAR: '0.00'
       })
     })
   })

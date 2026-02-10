@@ -8,7 +8,7 @@ const EMPTY_CONTENT_LENGTH = 5
 
 const getCredential = () =>
   new DefaultAzureCredential({
-    managedIdentityClientId: storageConfig.managedIdentityClientId,
+    managedIdentityClientId: storageConfig.managedIdentityClientId
   })
 
 const createBlobServiceClient = () => {
@@ -47,7 +47,7 @@ const initialiseContainers = async () => {
 
     await Promise.all([
       reportContainer.createIfNotExists(),
-      dataRequestContainer.createIfNotExists(),
+      dataRequestContainer.createIfNotExists()
     ])
 
     console.log('Blob containers exist')
@@ -86,5 +86,5 @@ const getDataRequestFile = async (filename) => {
 module.exports = {
   initialiseContainers,
   writeReportFile,
-  getDataRequestFile,
+  getDataRequestFile
 }

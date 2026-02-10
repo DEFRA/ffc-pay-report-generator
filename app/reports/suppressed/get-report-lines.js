@@ -15,7 +15,7 @@ const getReportLines = (events) => {
         deltaValue: convertToPounds(data.deltaValue || 0),
         creditAP: convertToPounds(data.creditAP || 0),
         suppressedAR: convertToPounds(data.suppressedAR || 0),
-        suppressed: moment(event.time).format(DATE_FORMAT),
+        suppressed: moment(event.time).format(DATE_FORMAT)
       }
     })
 }
