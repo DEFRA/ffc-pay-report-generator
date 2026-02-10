@@ -5,17 +5,17 @@ const { convertToPounds } = require('../../currency-convert')
 const getReportLines = (events) => {
   return events
     .sort((x, y) => (x.time || 0) - (y.time || 0))
-    .map(event => {
+    .map((event) => {
       const data = event.data || {}
       return {
-        frn: event.PartitionKey,
+        frn: event.partitionKey,
         agreementNumber: data.agreementNumber,
         marketingYear: data.marketingYear,
         paymentRequestNumber: data.paymentRequestNumber,
         deltaValue: convertToPounds(data.deltaValue || 0),
         creditAP: convertToPounds(data.creditAP || 0),
         suppressedAR: convertToPounds(data.suppressedAR || 0),
-        suppressed: moment(event.time).format(DATE_FORMAT)
+        suppressed: moment(event.time).format(DATE_FORMAT),
       }
     })
 }
