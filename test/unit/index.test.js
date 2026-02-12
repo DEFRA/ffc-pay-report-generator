@@ -4,7 +4,7 @@ jest.mock('../../app/reports')
 const { createReports: mockCreateReports } = require('../../app/reports')
 
 jest.mock('../../app/storage')
-const { initialise: mockInitialise } = require('../../app/storage')
+const { initialiseContainers: mockInitialise } = require('../../app/storage')
 
 describe('app', () => {
   beforeEach(() => {

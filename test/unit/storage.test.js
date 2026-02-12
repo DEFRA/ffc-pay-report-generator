@@ -1,130 +1,284 @@
-const mockTableClient = { createTable: jest.fn() }
-const mockContainerClient = { createIfNotExists: jest.fn() }
-const mockBlobServiceClient = { getContainerClient: jest.fn().mockReturnValue(mockContainerClient) }
+jest.mock('@azure/storage-blob')
+jest.mock('@azure/identity')
 
-jest.mock('@azure/data-tables', () => {
-  const TableClientConstructor = jest.fn(() => mockTableClient)
-  TableClientConstructor.fromConnectionString = jest.fn().mockReturnValue(mockTableClient)
-  return { TableClient: TableClientConstructor, odata: {} }
-})
+describe('storage', () => {
+  let storage
 
-jest.mock('@azure/storage-blob', () => {
-  const BlobServiceClientConstructor = jest.fn(() => mockBlobServiceClient)
-  BlobServiceClientConstructor.fromConnectionString = jest.fn().mockReturnValue(mockBlobServiceClient)
-  return { BlobServiceClient: BlobServiceClientConstructor }
-})
+  const mockUpload = jest.fn().mockResolvedValue({})
+  const mockDownload = jest.fn().mockResolvedValue({ readableStreamBody: 'data' })
+  const mockDelete = jest.fn().mockResolvedValue({})
+  const mockGetProperties = jest.fn().mockResolvedValue({ contentLength: 100 })
 
-const mockDefaultAzureCredential = jest.fn()
-jest.mock('@azure/identity', () => ({
-  DefaultAzureCredential: jest.fn().mockImplementation(() => mockDefaultAzureCredential)
-}))
+  const mockBlockBlobClient = {
+    upload: mockUpload,
+    download: mockDownload,
+    delete: mockDelete,
+    getProperties: mockGetProperties
+  }
 
-const config = require('../../app/config/storage')
-const { PAYMENT_EVENT, BATCH_EVENT, HOLD_EVENT, WARNING_EVENT } = require('../../app/constants/event-types')
-const { initialise, getClient } = require('../../app/storage')
+  const mockReportContainer = {
+    createIfNotExists: jest.fn().mockResolvedValue({}),
+    getBlockBlobClient: jest.fn(() => mockBlockBlobClient)
+  }
 
-describe('storage with managed identity', () => {
-  let consoleSpy
+  const mockDataRequestContainer = {
+    createIfNotExists: jest.fn().mockResolvedValue({}),
+    getBlockBlobClient: jest.fn(() => mockBlockBlobClient)
+  }
+
+  const mockBlobServiceClient = {
+    getContainerClient: jest.fn((containerName) => {
+      if (containerName === 'reports') return mockReportContainer
+      if (containerName === 'data-requests') return mockDataRequestContainer
+      return null
+    })
+  }
+
+  const mockStorageConfig = {
+    useConnectionString: false,
+    connectionString: 'UseDevelopmentStorage=true',
+    createEntities: true,
+    account: 'teststorageaccount',
+    managedIdentityClientId: 'test-client-id',
+    reportContainer: 'reports',
+    dataRequestContainer: 'data-requests'
+  }
+
+  const setupMocks = () => {
+    require('@azure/storage-blob').BlobServiceClient.fromConnectionString = jest
+      .fn()
+      .mockReturnValue(mockBlobServiceClient)
+
+    require('@azure/storage-blob').BlobServiceClient.mockImplementation(() => mockBlobServiceClient)
+
+    require('@azure/identity').DefaultAzureCredential.mockImplementation(() => ({}))
+  }
 
   beforeEach(() => {
     jest.resetModules()
     jest.clearAllMocks()
-    consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
 
-    jest.mock('../../app/config/storage', () => ({
-      useConnectionString: false,
-      managedIdentityClientId: 'test-client-id',
-      account: 'testaccount',
-      paymentTable: 'payments',
-      holdTable: 'holds',
-      warningTable: 'warnings',
-      batchTable: 'batches',
-      container: 'reports',
-      createEntities: true
+    mockReportContainer.createIfNotExists.mockClear()
+    mockDataRequestContainer.createIfNotExists.mockClear()
+    mockReportContainer.getBlockBlobClient.mockClear()
+    mockDataRequestContainer.getBlockBlobClient.mockClear()
+    mockBlobServiceClient.getContainerClient.mockClear()
+
+    mockStorageConfig.useConnectionString = false
+    mockStorageConfig.createEntities = true
+
+    jest.doMock('../../app/config', () => ({
+      storageConfig: mockStorageConfig
     }))
+
+    setupMocks()
+
+    jest.spyOn(console, 'log').mockImplementation(() => {})
+    jest.spyOn(console, 'warn').mockImplementation(() => {})
+    jest.spyOn(console, 'error').mockImplementation(() => {})
+
+    storage = require('../../app/storage')
   })
 
-  afterEach(() => consoleSpy.mockRestore())
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
 
-  test('initialises with managed identity', async () => {
-    const { initialise } = require('../../app/storage')
-    const { DefaultAzureCredential } = require('@azure/identity')
+  describe('initialisation', () => {
+    test('uses connection string when config.useConnectionString is true', async () => {
+      mockStorageConfig.useConnectionString = true
+      jest.resetModules()
 
-    await initialise()
+      jest.doMock('../../app/config', () => ({
+        storageConfig: mockStorageConfig
+      }))
 
-    expect(DefaultAzureCredential).toHaveBeenCalledWith({
-      managedIdentityClientId: 'test-client-id'
+      setupMocks()
+
+      storage = require('../../app/storage')
+      await storage.initialiseContainers()
+
+      expect(require('@azure/storage-blob').BlobServiceClient.fromConnectionString)
+        .toHaveBeenCalledWith(mockStorageConfig.connectionString)
+      expect(console.log).toHaveBeenCalledWith('Using connection string for Blob Storage')
     })
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Using DefaultAzureCredential with managed identity for Table Client'
-    )
-  })
 
-  test('creates table clients with correct URLs', async () => {
-    const { TableClient } = require('@azure/data-tables')
-    const { initialise } = require('../../app/storage')
+    test('uses DefaultAzureCredential when config.useConnectionString is false', async () => {
+      mockStorageConfig.useConnectionString = false
+      jest.resetModules()
 
-    await initialise()
-    const expectedUrl = 'https://testaccount.table.core.windows.net'
+      jest.doMock('../../app/config', () => ({
+        storageConfig: mockStorageConfig
+      }))
 
-    const tableNames = ['payments', 'holds', 'warnings', 'batches']
-    tableNames.forEach((tableName, index) => {
-      expect(TableClient).toHaveBeenNthCalledWith(index + 1, expectedUrl, tableName, expect.anything())
+      setupMocks()
+
+      storage = require('../../app/storage')
+      await storage.initialiseContainers()
+
+      expect(require('@azure/identity').DefaultAzureCredential).toHaveBeenCalledWith({
+        managedIdentityClientId: mockStorageConfig.managedIdentityClientId
+      })
+
+      expect(require('@azure/storage-blob').BlobServiceClient).toHaveBeenCalledWith(
+        `https://${mockStorageConfig.account}.blob.core.windows.net`,
+        expect.any(Object)
+      )
+      expect(console.log).toHaveBeenCalledWith('Using DefaultAzureCredential with managed identity for Blob Storage')
+    })
+
+    test('initialises containers when createEntities is true', async () => {
+      mockStorageConfig.createEntities = true
+      jest.resetModules()
+
+      jest.doMock('../../app/config', () => ({
+        storageConfig: mockStorageConfig
+      }))
+
+      setupMocks()
+
+      storage = require('../../app/storage')
+      await storage.initialiseContainers()
+
+      expect(mockReportContainer.createIfNotExists).toHaveBeenCalled()
+      expect(mockDataRequestContainer.createIfNotExists).toHaveBeenCalled()
+      expect(console.log).toHaveBeenCalledWith('Making sure blob containers exist')
+      expect(console.log).toHaveBeenCalledWith('Blob containers exist')
+    })
+
+    test('does not create containers when createEntities is false', async () => {
+      mockStorageConfig.createEntities = false
+      jest.resetModules()
+
+      jest.doMock('../../app/config', () => ({
+        storageConfig: mockStorageConfig
+      }))
+
+      setupMocks()
+
+      storage = require('../../app/storage')
+      await storage.initialiseContainers()
+
+      expect(mockReportContainer.createIfNotExists).not.toHaveBeenCalled()
+      expect(mockDataRequestContainer.createIfNotExists).not.toHaveBeenCalled()
+    })
+
+    test('does not reinitialise containers after first time', async () => {
+      await storage.writeReportFile('first.json', 'content1')
+      await storage.writeReportFile('second.json', 'content2')
+
+      expect(mockReportContainer.createIfNotExists).toHaveBeenCalledTimes(1)
+      expect(mockDataRequestContainer.createIfNotExists).toHaveBeenCalledTimes(1)
+    })
+
+    test('logs Storage ready after initialisation', async () => {
+      await storage.initialiseContainers()
+      expect(console.log).toHaveBeenCalledWith('Storage ready')
     })
   })
-})
 
-describe('storage', () => {
-  let consoleSpy
+  describe('writeReportFile', () => {
+    test('initialises containers before writing', async () => {
+      await storage.writeReportFile('test.json', 'test content')
 
-  beforeEach(() => {
-    jest.clearAllMocks()
-    consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {})
-  })
+      expect(mockBlobServiceClient.getContainerClient).toHaveBeenCalledWith('reports')
+    })
 
-  afterEach(() => consoleSpy.mockRestore())
+    test('uploads content to the report container', async () => {
+      const filename = 'test-report.json'
+      const content = 'test report content'
 
-  const tables = ['paymentTable', 'batchTable', 'holdTable', 'warningTable']
+      await storage.writeReportFile(filename, content)
 
-  tables.forEach((table) => {
-    test(`should create ${table} when initialising`, async () => {
-      await initialise()
-      expect(mockTableClient.createTable).toHaveBeenCalledWith(config[table])
+      expect(mockReportContainer.getBlockBlobClient).toHaveBeenCalledWith(filename)
+      expect(mockBlockBlobClient.upload).toHaveBeenCalledWith(content, content.length)
+    })
+
+    test('returns the blob client', async () => {
+      const result = await storage.writeReportFile('test.json', 'content')
+
+      expect(result).toBe(mockBlockBlobClient)
+    })
+
+    test('throws error and handles upload failures', async () => {
+      mockUpload.mockRejectedValueOnce(new Error('Upload failed'))
+
+      await expect(storage.writeReportFile('badfile.json', 'content'))
+        .rejects.toThrow('Upload failed')
     })
   })
 
-  test('should create each table once', async () => {
-    await initialise()
-    expect(mockTableClient.createTable).toHaveBeenCalledTimes(tables.length)
-  })
+  describe('getDataRequestFile', () => {
+    beforeEach(async () => {
+      await storage.initialiseContainers()
+    })
 
-  test('should create container once when initialising', async () => {
-    await initialise()
-    expect(mockContainerClient.createIfNotExists).toHaveBeenCalledTimes(1)
-  })
+    test('downloads file from data request container', async () => {
+      const filename = 'data-request.json'
 
-  const eventClients = [
-    [PAYMENT_EVENT, 'paymentClient'],
-    [BATCH_EVENT, 'batchClient'],
-    [HOLD_EVENT, 'holdClient'],
-    [WARNING_EVENT, 'warningClient']
-  ]
+      const result = await storage.getDataRequestFile(filename)
 
-  eventClients.forEach(([eventType]) => {
-    test(`getClient should return client for ${eventType}`, async () => {
-      await initialise()
-      const client = getClient(eventType)
-      expect(client).toBeDefined()
+      expect(mockDataRequestContainer.getBlockBlobClient).toHaveBeenCalledWith(filename)
+      expect(mockBlockBlobClient.getProperties).toHaveBeenCalled()
+      expect(mockBlockBlobClient.download).toHaveBeenCalled()
+      expect(result).toEqual({ readableStreamBody: 'data' })
+    })
+
+    test('deletes file after download', async () => {
+      await storage.getDataRequestFile('test.json')
+
+      expect(mockBlockBlobClient.delete).toHaveBeenCalled()
+    })
+
+    test('deletes file even if download fails', async () => {
+      mockDownload.mockRejectedValueOnce(new Error('Download failed'))
+
+      await expect(storage.getDataRequestFile('test.json'))
+        .rejects.toThrow('Download failed')
+
+      expect(mockBlockBlobClient.delete).toHaveBeenCalled()
+    })
+
+    test('deletes file even when properties check throws', async () => {
+      mockGetProperties.mockRejectedValueOnce(new Error('Properties failed'))
+
+      await expect(storage.getDataRequestFile('test.json'))
+        .rejects.toThrow('Properties failed')
+
+      expect(mockBlockBlobClient.delete).toHaveBeenCalled()
+    })
+
+    test('accepts files with contentLength > 5', async () => {
+      mockGetProperties.mockResolvedValueOnce({ contentLength: 6 })
+
+      const result = await storage.getDataRequestFile('valid.json')
+
+      expect(result).toEqual({ readableStreamBody: 'data' })
+      expect(mockBlockBlobClient.download).toHaveBeenCalled()
     })
   })
 
-  test('getClient should throw error for unknown event', async () => {
-    await initialise()
-    expect(() => getClient('unknown')).toThrow()
-  })
+  describe('integration scenarios', () => {
+    test('handles multiple file operations sequentially', async () => {
+      await storage.writeReportFile('report1.json', 'content1')
+      await storage.writeReportFile('report2.json', 'content2')
 
-  test('should log "Storage ready" once storage is initialised', async () => {
-    await initialise()
-    expect(consoleSpy).toHaveBeenCalledWith('Storage ready')
+      await storage.initialiseContainers()
+      await storage.getDataRequestFile('data1.json')
+
+      expect(mockBlockBlobClient.upload).toHaveBeenCalledTimes(2)
+      expect(mockBlockBlobClient.download).toHaveBeenCalledTimes(1)
+      expect(mockBlockBlobClient.delete).toHaveBeenCalledTimes(1)
+    })
+
+    test('maintains container initialization across operations', async () => {
+      await storage.writeReportFile('report1.json', 'content1')
+      await storage.initialiseContainers()
+      await storage.getDataRequestFile('data1.json')
+      await storage.writeReportFile('report2.json', 'content2')
+
+      expect(mockReportContainer.createIfNotExists).toHaveBeenCalledTimes(1)
+      expect(mockDataRequestContainer.createIfNotExists).toHaveBeenCalledTimes(1)
+    })
   })
 })

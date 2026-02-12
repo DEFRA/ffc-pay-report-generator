@@ -1,17 +1,25 @@
 jest.mock('../../../../app/reports/suppressed/get-events')
-const { getEvents: mockGetEvents } = require('../../../../app/reports/suppressed/get-events')
+const {
+  getEvents: mockGetEvents
+} = require('../../../../app/reports/suppressed/get-events')
 
 jest.mock('../../../../app/reports/suppressed/get-report-lines')
-const { getReportLines: mockGetReportLines } = require('../../../../app/reports/suppressed/get-report-lines')
+const {
+  getReportLines: mockGetReportLines
+} = require('../../../../app/reports/suppressed/get-report-lines')
 
 jest.mock('../../../../app/reports/convert-to-csv')
-const { convertToCSV: mockConvertToCSV } = require('../../../../app/reports/convert-to-csv')
+const {
+  convertToCSV: mockConvertToCSV
+} = require('../../../../app/reports/convert-to-csv')
 
 jest.mock('../../../../app/storage')
-const { writeFile: mockWriteFile } = require('../../../../app/storage')
+const { writeReportFile: mockWriteFile } = require('../../../../app/storage')
 
 const { reportsConfig } = require('../../../../app/config')
-const { createSuppressedReport } = require('../../../../app/reports/suppressed/create')
+const {
+  createSuppressedReport
+} = require('../../../../app/reports/suppressed/create')
 
 const event = require('../../../mocks/events/suppressed')
 const reportLine = require('../../../mocks/report-lines/suppressed')
