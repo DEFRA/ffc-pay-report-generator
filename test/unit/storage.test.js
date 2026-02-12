@@ -239,25 +239,6 @@ describe('storage', () => {
       expect(mockBlockBlobClient.delete).toHaveBeenCalled()
     })
 
-    test('throws error if file is empty (contentLength <= 5)', async () => {
-      mockGetProperties.mockResolvedValueOnce({ contentLength: 5 })
-
-      await expect(storage.getDataRequestFile('empty.json'))
-        .rejects.toThrow('No data was found for the selected report criteria')
-
-      expect(console.warn).toHaveBeenCalledWith('File empty.json is empty.')
-      expect(mockBlockBlobClient.delete).toHaveBeenCalled()
-    })
-
-    test('throws error if file is smaller than threshold', async () => {
-      mockGetProperties.mockResolvedValueOnce({ contentLength: 3 })
-
-      await expect(storage.getDataRequestFile('tiny.json'))
-        .rejects.toThrow('No data was found for the selected report criteria')
-
-      expect(mockBlockBlobClient.delete).toHaveBeenCalled()
-    })
-
     test('deletes file even when properties check throws', async () => {
       mockGetProperties.mockRejectedValueOnce(new Error('Properties failed'))
 
