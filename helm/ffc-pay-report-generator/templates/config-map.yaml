@@ -7,4 +7,13 @@ data:
   AZURE_STORAGE_CONNECTION_STRING: {{ quote .Values.container.azureStorageConnectionString }}
   AZURE_STORAGE_USE_CONNECTION_STRING: {{ quote .Values.container.azureStorageUseConnectionString }}
   AZURE_STORAGE_ACCOUNT: {{ quote .Values.container.azureStorageAccountName }}
+  {{- if and (.Values.environmentCode) (not .Values.pr) }}
+    {{- if ne .Values.environmentCode "snd" }}
+  EVENT_HUB_ENDPOINT: {{ .Values.container.eventHubEndpoint }}-{{ .Values.environmentCode }}
+    {{ else }}
+  EVENT_HUB_ENDPOINT: {{ quote .Values.container.eventHubEndpoint }}
+    {{- end }}
+  {{ else }}
+  EVENT_HUB_ENDPOINT: {{ quote .Values.container.eventHubEndpoint }}
+  {{- end }}
 {{- end -}}

@@ -8,7 +8,8 @@ const schema = Joi.object({
   holdTable: Joi.string().default('holds'),
   warningTable: Joi.string().default('warnings'),
   batchTable: Joi.string().default('batches'),
-  container: Joi.string().default('reports'),
+  reportContainer: Joi.string().default('reports'),
+  dataRequestContainer: Joi.string().default('data-requests'),
   createEntities: Joi.bool().default(false),
   managedIdentityClientId: Joi.string().optional()
 })
@@ -21,7 +22,8 @@ const config = {
   holdTable: process.env.AZURE_STORAGE_HOLD_TABLE,
   warningTable: process.env.AZURE_STORAGE_WARNING_TABLE,
   batchTable: process.env.AZURE_STORAGE_BATCH_TABLE,
-  container: process.env.AZURE_STORAGE_CONTAINER,
+  reportContainer: process.env.AZURE_STORAGE_CONTAINER,
+  dataRequestContainer: process.env.AZURE_STORAGE_DATA_REQUEST_CONTAINER,
   createEntities: process.env.AZURE_STORAGE_CREATE_ENTITIES,
   managedIdentityClientId: process.env.AZURE_CLIENT_ID
 
