@@ -1,2 +1,10 @@
 resources:
   identity: pay-report-generator
+  storage_accounts:
+    - name: pay
+      containers:
+        - name: data-requests
+          roles:
+            - name: blobContributor
+      roles:
+        - name: storageAccountContributor
