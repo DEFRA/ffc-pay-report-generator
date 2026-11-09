@@ -19,11 +19,11 @@ containerSecret:
   type: Opaque
 
 container:
-  nodeOptions: --max-old-space-size=8192
-  requestMemory: 800Mi
-  requestCpu: 800m
-  limitMemory: 8192Mi
-  limitCpu: 6000m
+  nodeOptions: --max-old-space-size=768
+  requestMemory: 256Mi
+  requestCpu: 400m
+  limitMemory: 1Gi
+  limitCpu: 2000m
   port: 3000
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
